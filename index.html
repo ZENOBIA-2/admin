@@ -150,7 +150,6 @@ textarea.form-control{min-height:90px;resize:vertical}
 
 .gallery-preview{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
 
-/* Price grid for 3 currencies */
 .currency-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:16px}
 .currency-block{background:#f8fafc;border:1.5px solid #e5e7eb;border-radius:12px;padding:12px}
 .currency-block h5{font-size:0.8rem;font-weight:900;color:var(--primary-dark);margin-bottom:8px;display:flex;align-items:center;gap:6px}
@@ -205,7 +204,7 @@ textarea.form-control{min-height:90px;resize:vertical}
         <i class="fas fa-envelope"></i>
       </div>
       <div class="login-field">
-        <input type="password" id="loginPassword" placeholder="كلمة المرور" required value="admin123">
+        <input type="password" id="loginPassword" placeholder="كلمة المرور" required>
         <i class="fas fa-lock"></i>
       </div>
       <button type="submit" class="login-btn">
@@ -457,7 +456,6 @@ textarea.form-control{min-height:90px;resize:vertical}
         </div>
       </div>
 
-      <!-- صفحة أسعار الصرف -->
       <div class="page" id="page-rates">
         <div class="card">
           <div class="card-header"><div class="card-title"><i class="fas fa-exchange-alt"></i><span>أسعار الصرف الافتراضية</span></div></div>
@@ -514,7 +512,7 @@ textarea.form-control{min-height:90px;resize:vertical}
   </main>
 </div>
 
-<!-- PRODUCT MODAL مع الأسعار الثلاثية -->
+<!-- PRODUCT MODAL -->
 <div class="modal" id="productModal">
   <div class="modal-content">
     <div class="modal-header">
@@ -548,7 +546,6 @@ textarea.form-control{min-height:90px;resize:vertical}
         <select class="form-control" id="productCategory"><option value="">-- اختر --</option></select>
       </div>
 
-      <!-- الأسعار الثلاثية -->
       <label class="form-label" style="margin-bottom:10px"><i class="fas fa-coins" style="color:var(--gold)"></i> الأسعار بالعملات الثلاث</label>
       <div class="currency-grid">
         <div class="currency-block">
@@ -681,6 +678,10 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
+// ============ بيانات الدخول ============
+const ADMIN_EMAIL = 'admin@zenobia.com';
+const ADMIN_PASSWORD = 'z789z98zfd';
+
 const SEED_CATEGORIES = [
   {id:'stationery', name:'قرطاسية', icon:'fa-pen-fancy', order:1, active:true},
   {id:'notebooks', name:'دفاتر', icon:'fa-book', order:2, active:true},
@@ -730,17 +731,29 @@ window.showToast = function(msg, type='success'){
 
 window.handleLogin = async function(e){
   e.preventDefault();
-  const email = document.getElementById('loginEmail').value.trim();
+  const email = document.getElementById('loginEmail').value.trim().toLowerCase();
   const pass = document.getElementById('loginPassword').value;
-  if (email === 'admin@zenobia.com' && pass === 'admin123'){
+  const err = document.getElementById('loginError');
+  
+  if (email === ADMIN_EMAIL && pass === ADMIN_PASSWORD){
+    // حفظ جلسة الدخول
+    sessionStorage.setItem('zb_admin_logged', '1');
+    err.classList.remove('show');
     document.getElementById('loginScreen').style.display = 'none';
     document.getElementById('app').classList.add('active');
-    await initAdmin(); return;
+    await initAdmin();
+    return;
   }
-  document.getElementById('loginError').textContent = '⚠️ خطأ في الدخول'; document.getElementById('loginError').classList.add('show');
+  err.textContent = '⚠️ خطأ في البريد أو كلمة المرور';
+  err.classList.add('show');
 };
 
-window.logout = function(){ if (confirm('تسجيل الخروج؟')) location.reload(); };
+window.logout = function(){ 
+  if (confirm('تسجيل الخروج؟')) {
+    sessionStorage.removeItem('zb_admin_logged');
+    location.reload();
+  }
+};
 
 async function initAdmin(){
   await loadAllFromFirebase();
@@ -1344,6 +1357,13 @@ window.saveOrderStatus = async function(){
 window.addEventListener('DOMContentLoaded', () => {
   const ls = document.getElementById('loadingScreen');
   if (ls) ls.style.display = 'none';
+  
+  // استعادة الجلسة إذا كان المستخدم مسجل دخول
+  if (sessionStorage.getItem('zb_admin_logged') === '1') {
+    document.getElementById('loginScreen').style.display = 'none';
+    document.getElementById('app').classList.add('active');
+    initAdmin();
+  }
 });
 
 window.addEventListener('load', () => {
