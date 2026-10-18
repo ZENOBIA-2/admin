@@ -126,6 +126,8 @@ td img{width:52px;height:52px;object-fit:cover;border-radius:10px;border:1.5px s
 .btn-outline:hover{border-color:var(--primary);color:var(--primary)}
 .btn-success{background:linear-gradient(135deg,#10b981,#059669);color:white}
 .btn-danger{background:linear-gradient(135deg,#ef4444,#b91c1c);color:white}
+.btn-danger:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(239,68,68,0.3)}
+.btn-danger:disabled{opacity:0.6;cursor:not-allowed;transform:none}
 .btn-icon{width:36px;height:36px;border-radius:10px;background:#f1f5f9;color:#334155;display:flex;align-items:center;justify-content:center;font-size:0.9rem}
 .btn-icon:hover{background:#fee2e2;color:var(--primary)}
 .btn-icon.danger{background:#fee2e2;color:#dc2626}
@@ -207,7 +209,6 @@ textarea.form-control{min-height:90px;resize:vertical}
 .icon-lib-item.selected{background:linear-gradient(135deg,var(--primary),var(--primary-dark));color:white;border-color:var(--primary-dark);box-shadow:0 4px 10px rgba(220,38,38,0.3)}
 .icon-lib-cat{grid-column:1/-1;font-size:0.7rem;font-weight:900;color:var(--gray);text-transform:uppercase;letter-spacing:1px;padding:4px 2px;border-bottom:1px solid #e5e7eb;margin-top:4px}
 
-/* Discount requests */
 .discount-requests-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:16px}
 .discount-request-card{background:white;border:1.5px solid #f1f5f9;border-radius:16px;padding:16px;position:relative;overflow:hidden;transition:.2s}
 .discount-request-card:hover{box-shadow:0 10px 30px rgba(15,23,42,0.1);transform:translateY(-2px)}
@@ -231,11 +232,9 @@ textarea.form-control{min-height:90px;resize:vertical}
 .discount-req-actions{display:flex;gap:6px;flex-wrap:wrap}
 .discount-req-actions button{flex:1;padding:9px;border-radius:9px;font-size:0.82rem;font-weight:900;min-width:90px}
 
-/* Instagram discount modal */
-.insta-modal-hero{background:linear-gradient(135deg,#833ab4,#fd1d1d,#fcb045);color:white;padding:20px;text-align:center;border-radius:20px 20px 0 0}
-.insta-modal-hero i{font-size:2rem;margin-bottom:8px}
-.insta-modal-hero h2{font-size:1.2rem;font-weight:900;margin-bottom:4px}
-.insta-modal-hero p{font-size:0.82rem;opacity:.95;font-weight:700}
+.scope-toggle{display:flex;background:#f1f5f9;padding:4px;border-radius:10px;margin-bottom:14px}
+.scope-toggle button{flex:1;padding:10px;border-radius:8px;font-size:0.85rem;font-weight:800;color:var(--gray-600);transition:.2s}
+.scope-toggle button.active{background:white;color:#833ab4;box-shadow:0 2px 4px rgba(0,0,0,0.08)}
 
 .products-checkbox-list{max-height:280px;overflow-y:auto;border:1.5px solid #e5e7eb;border-radius:12px;padding:10px;background:#f8fafc}
 .product-check-item{display:flex;align-items:center;gap:10px;padding:8px;background:white;border-radius:8px;margin-bottom:6px;border:1.5px solid transparent;transition:.15s;cursor:pointer}
@@ -247,10 +246,6 @@ textarea.form-control{min-height:90px;resize:vertical}
 .product-check-item .pc-info{flex:1;min-width:0}
 .product-check-item .pc-info h6{font-size:0.82rem;font-weight:800;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;margin-bottom:2px}
 .product-check-item .pc-info small{font-size:0.72rem;color:var(--primary-dark);font-weight:800}
-
-.scope-toggle{display:flex;background:#f1f5f9;padding:4px;border-radius:10px;margin-bottom:14px}
-.scope-toggle button{flex:1;padding:10px;border-radius:8px;font-size:0.85rem;font-weight:800;color:var(--gray-600);transition:.2s}
-.scope-toggle button.active{background:white;color:#833ab4;box-shadow:0 2px 4px rgba(0,0,0,0.08)}
 
 .toast-container{position:fixed;top:24px;left:50%;transform:translateX(-50%);z-index:9999;display:flex;flex-direction:column;gap:10px;pointer-events:none;width:calc(100% - 32px);max-width:400px}
 .toast{background:linear-gradient(135deg,#1e1b4b,#450a0a);color:white;padding:14px 20px;border-radius:14px;display:flex;align-items:center;gap:12px;box-shadow:0 24px 60px rgba(0,0,0,0.3);font-weight:800;font-size:0.9rem;animation:toastIn .4s;pointer-events:all}
@@ -422,7 +417,7 @@ textarea.form-control{min-height:90px;resize:vertical}
 
       <div class="page" id="page-orders">
         <div class="toolbar" style="display:flex; gap:12px; margin-bottom:20px; flex-wrap:wrap;">
-          <div style="flex:1; position:relative;">
+          <div style="flex:1; position:relative;min-width:200px;">
             <input type="text" id="ordersSearch" placeholder="ابحث برقم الطلب أو اسم العميل..." oninput="renderOrdersCards()" style="width:100%; padding:12px 44px 12px 16px; border:1.5px solid var(--border); border-radius:11px; font-size:15px; font-weight:600;">
             <i class="fas fa-search" style="position:absolute; right:16px; top:50%; transform:translateY(-50%); color:var(--gray);"></i>
           </div>
@@ -434,18 +429,29 @@ textarea.form-control{min-height:90px;resize:vertical}
             <option value="delivered">تم التسليم</option>
             <option value="cancelled">ملغى</option>
           </select>
+          <button class="btn btn-danger" onclick="deleteAllOrders()" style="padding:12px 18px;">
+            <i class="fas fa-trash-alt"></i><span>حذف الكل</span>
+          </button>
         </div>
         <div class="orders-grid" id="ordersGrid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:14px"></div>
       </div>
 
       <div class="page" id="page-customers">
+        <div class="toolbar" style="display:flex; gap:12px; margin-bottom:20px; flex-wrap:wrap;">
+          <div style="flex:1; position:relative;min-width:200px;">
+            <input type="text" id="customersSearch" placeholder="ابحث بالاسم أو البريد..." oninput="renderCustomersTable()" style="width:100%; padding:12px 44px 12px 16px; border:1.5px solid var(--border); border-radius:11px; font-size:15px; font-weight:600;">
+            <i class="fas fa-search" style="position:absolute; right:16px; top:50%; transform:translateY(-50%); color:var(--gray);"></i>
+          </div>
+          <button class="btn btn-danger" onclick="deleteAllCustomers()" style="padding:12px 18px;">
+            <i class="fas fa-trash-alt"></i><span>حذف الكل</span>
+          </button>
+        </div>
         <div class="card"><div class="card-body" style="padding:0"><div class="table-wrap"><table><thead><tr><th>الاسم</th><th>البريد</th><th>الهاتف</th><th>المدينة</th><th>الخصم</th><th>إجراءات</th></tr></thead><tbody id="customersTable"></tbody></table></div></div></div>
       </div>
 
-      <!-- DISCOUNTS PAGE -->
       <div class="page" id="page-discounts">
         <div class="toolbar" style="display:flex; gap:12px; margin-bottom:20px; flex-wrap:wrap;">
-          <div style="flex:1; position:relative;">
+          <div style="flex:1; position:relative;min-width:200px;">
             <input type="text" id="discountsSearch" placeholder="ابحث بالاسم أو البريد..." oninput="renderDiscountRequests()" style="width:100%; padding:12px 44px 12px 16px; border:1.5px solid var(--border); border-radius:11px; font-size:15px; font-weight:600;">
             <i class="fas fa-search" style="position:absolute; right:16px; top:50%; transform:translateY(-50%); color:var(--gray);"></i>
           </div>
@@ -455,6 +461,9 @@ textarea.form-control{min-height:90px;resize:vertical}
             <option value="approved">موافق عليها</option>
             <option value="rejected">مرفوضة</option>
           </select>
+          <button class="btn btn-danger" onclick="deleteAllDiscountRequests()" style="padding:12px 18px;">
+            <i class="fas fa-trash-alt"></i><span>حذف الكل</span>
+          </button>
         </div>
         <div class="discount-requests-grid" id="discountRequestsGrid"></div>
       </div>
@@ -646,14 +655,8 @@ textarea.form-control{min-height:90px;resize:vertical}
         <div style="font-size:0.8rem;font-weight:800;color:#6b21a8"><i class="fas fa-user"></i> <span id="approveCustomerName">—</span></div>
         <div style="font-size:0.72rem;color:#7c3aed;font-weight:700;margin-top:2px" id="approveCustomerEmailDisp">—</div>
       </div>
-      <div style="margin-bottom:14px">
-        <label class="form-label">نسبة الخصم (%)</label>
-        <input type="number" class="form-control" id="discountPercent" min="1" max="100" value="10" placeholder="مثال: 15">
-      </div>
-      <div style="margin-bottom:14px">
-        <label class="form-label">مدة الخصم (بالأيام)</label>
-        <input type="number" class="form-control" id="discountDays" min="1" value="30" placeholder="مثال: 30">
-      </div>
+      <div style="margin-bottom:14px"><label class="form-label">نسبة الخصم (%)</label><input type="number" class="form-control" id="discountPercent" min="1" max="100" value="10"></div>
+      <div style="margin-bottom:14px"><label class="form-label">مدة الخصم (بالأيام)</label><input type="number" class="form-control" id="discountDays" min="1" value="30"></div>
       <div style="margin-bottom:14px">
         <label class="form-label">نطاق الخصم</label>
         <div class="scope-toggle">
@@ -677,6 +680,39 @@ textarea.form-control{min-height:90px;resize:vertical}
       <div class="form-actions">
         <button class="btn btn-outline" onclick="closeDiscountApprove()">إلغاء</button>
         <button class="btn btn-success" onclick="approveDiscount()"><i class="fas fa-check"></i> الموافقة وتفعيل الخصم</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- DELETE ALL CONFIRM MODAL -->
+<div class="modal" id="deleteAllModal" onclick="if(event.target===this)closeDeleteAllModal()">
+  <div class="modal-content" style="max-width:440px">
+    <div class="modal-header">
+      <div class="modal-title" style="color:#dc2626">
+        <i class="fas fa-exclamation-triangle" style="background:linear-gradient(135deg,#ef4444,#b91c1c)"></i>
+        <span>تأكيد الحذف الجماعي</span>
+      </div>
+      <button class="modal-close" onclick="closeDeleteAllModal()"><i class="fas fa-times"></i></button>
+    </div>
+    <div class="modal-body">
+      <div style="text-align:center;padding:10px 0 20px">
+        <div style="width:80px;height:80px;margin:0 auto 14px;border-radius:50%;background:linear-gradient(135deg,#fee2e2,#fecaca);display:flex;align-items:center;justify-content:center;color:#dc2626;font-size:2.2rem;box-shadow:0 10px 30px rgba(220,38,38,0.2)">
+          <i class="fas fa-trash-alt"></i>
+        </div>
+        <h3 style="font-size:1.1rem;font-weight:900;margin-bottom:8px;color:var(--dark)" id="deleteAllTitle">حذف كل السجلات؟</h3>
+        <p style="font-size:0.88rem;color:var(--gray);font-weight:700;line-height:1.7" id="deleteAllMsg">سيتم حذف جميع السجلات نهائياً من Firebase. لا يمكن التراجع عن هذه العملية.</p>
+        <div style="background:#fef3c7;border:1.5px solid #f59e0b;border-radius:10px;padding:10px;margin-top:12px;font-size:0.82rem;font-weight:800;color:#92400e">
+          <i class="fas fa-info-circle"></i> عدد السجلات: <span id="deleteAllCount">0</span>
+        </div>
+      </div>
+      <div class="form-actions" style="flex-direction:column;gap:8px;border-top:1.5px solid #f1f5f9;padding-top:16px;margin-top:0">
+        <button class="btn btn-danger" style="width:100%;justify-content:center;padding:12px" onclick="confirmDeleteAll()" id="deleteAllConfirmBtn">
+          <i class="fas fa-trash-alt"></i><span>نعم، احذف الكل نهائياً</span>
+        </button>
+        <button class="btn btn-outline" style="width:100%;justify-content:center;padding:12px" onclick="closeDeleteAllModal()">
+          <i class="fas fa-times"></i><span>إلغاء</span>
+        </button>
       </div>
     </div>
   </div>
@@ -720,6 +756,8 @@ let adminLogoData = null;
 let currentBundleItems = [];
 let discountScopeMode = 'all';
 let selectedProductIds = new Set();
+let deleteAllType = null;
+let deleteAllItems = [];
 
 const ICON_LIBRARY = [
   { group: 'قرطاسية', icons: ['fa-pen','fa-pen-fancy','fa-pen-nib','fa-pencil','fa-pencil-alt','fa-marker','fa-eraser','fa-ruler','fa-ruler-combined','fa-paperclip','fa-scissors','fa-clipboard','fa-thumbtack','fa-paintbrush','fa-palette','fa-calculator']},
@@ -773,6 +811,27 @@ async function initAdmin(){
   renderOrdersCards(); renderCustomersTable(); renderDiscountRequests();
   fillCategorySelects(); applyLogos();
 }
+
+window.autoSeedFirebase = async function(){
+  if (!confirm('سيتم استيراد البيانات. متابعة؟')) return;
+  try {
+    showToast('جاري الرفع...', 'info');
+    const SEED_CATEGORIES = [
+      {id:'stationery', name:'قرطاسية', icon:'fa-pen-fancy', order:1, active:true},
+      {id:'notebooks', name:'دفاتر', icon:'fa-book', order:2, active:true},
+      {id:'books', name:'كتب', icon:'fa-book-open', order:3, active:true},
+      {id:'gifts', name:'هدايا', icon:'fa-gift', order:4, active:true},
+      {id:'perfumes', name:'عطور', icon:'fa-spray-can-sparkles', order:5, active:true},
+      {id:'toys', name:'ألعاب', icon:'fa-gamepad', order:6, active:true},
+      {id:'office', name:'أدوات مكتبية', icon:'fa-paperclip', order:7, active:true}
+    ];
+    for (const cat of SEED_CATEGORIES) { const {id, ...rest} = cat; await setDoc(doc(db, 'categories', id), rest); }
+    showToast('🎉 تم الرفع بنجاح');
+    await loadAllFromFirebase();
+    document.getElementById('initBanner').style.display = 'none';
+    renderDashboard(); renderProductsTable(); renderCategoriesTable(); renderOrdersCards(); renderCustomersTable();
+  } catch(err){ showToast('⚠️ فشل: ' + err.message, 'error'); }
+};
 
 window.loadAllFromFirebase = async function(){
   try {
@@ -899,6 +958,80 @@ function fillCategorySelects(){
   if (sel) sel.innerHTML = '<option value="">-- اختر --</option>' + DATA.categories.map(c => `<option value="${c.id}">${c.name}</option>`).join('');
 }
 
+// ============ DELETE ALL ============
+window.deleteAllOrders = function(){
+  deleteAllType = 'orders';
+  deleteAllItems = [...DATA.orders];
+  openDeleteAllModal('حذف كل الطلبات؟', 'سيتم حذف جميع الطلبات نهائياً من Firebase. لا يمكن التراجع عن هذه العملية.');
+};
+
+window.deleteAllCustomers = function(){
+  deleteAllType = 'customers';
+  deleteAllItems = [...DATA.customers];
+  openDeleteAllModal('حذف كل العملاء؟', 'سيتم حذف جميع حسابات العملاء نهائياً. سيخسر العملاء خصوماتهم أيضاً.');
+};
+
+window.deleteAllDiscountRequests = function(){
+  deleteAllType = 'discount_requests';
+  deleteAllItems = [...DATA.discountRequests];
+  openDeleteAllModal('حذف كل طلبات الخصم؟', 'سيتم حذف جميع طلبات خصم الانستغرام نهائياً من Firebase. لن تتأثر الخصومات المفعّلة على حسابات العملاء.');
+};
+
+function openDeleteAllModal(title, msg){
+  document.getElementById('deleteAllTitle').textContent = title;
+  document.getElementById('deleteAllMsg').textContent = msg;
+  document.getElementById('deleteAllCount').textContent = deleteAllItems.length;
+  document.getElementById('deleteAllModal').classList.add('active');
+}
+
+window.closeDeleteAllModal = function(){
+  document.getElementById('deleteAllModal').classList.remove('active');
+  deleteAllType = null;
+  deleteAllItems = [];
+};
+
+window.confirmDeleteAll = async function(){
+  if (!deleteAllType || !deleteAllItems.length) { closeDeleteAllModal(); return; }
+  
+  const btn = document.getElementById('deleteAllConfirmBtn');
+  const originalHTML = btn.innerHTML;
+  btn.disabled = true;
+  btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i><span>جاري الحذف...</span>';
+  
+  try {
+    const CHUNK_SIZE = 400;
+    const total = deleteAllItems.length;
+    let deleted = 0;
+    
+    for (let i = 0; i < total; i += CHUNK_SIZE) {
+      const chunk = deleteAllItems.slice(i, i + CHUNK_SIZE);
+      const batch = writeBatch(db);
+      chunk.forEach(item => batch.delete(doc(db, deleteAllType, String(item.id))));
+      await batch.commit();
+      deleted += chunk.length;
+      btn.innerHTML = `<i class="fas fa-spinner fa-spin"></i><span>تم حذف ${deleted} من ${total}...</span>`;
+    }
+    
+    const labels = { orders: 'طلبات', customers: 'عملاء', discount_requests: 'طلبات خصم' };
+    showToast(`✅ تم حذف ${total} ${labels[deleteAllType] || 'سجل'} بنجاح`);
+    
+    closeDeleteAllModal();
+    await loadAllFromFirebase();
+    
+    const cp = document.querySelector('.page.active')?.id?.replace('page-','');
+    if(cp === 'orders') renderOrdersCards();
+    if(cp === 'customers') renderCustomersTable();
+    if(cp === 'discounts') renderDiscountRequests();
+    if(cp === 'dashboard') renderDashboard();
+    
+  } catch(err){
+    console.error(err);
+    showToast('❌ فشل الحذف: ' + err.message, 'error');
+    btn.disabled = false;
+    btn.innerHTML = originalHTML;
+  }
+};
+
 // ============ DISCOUNT REQUESTS ============
 window.renderDiscountRequests = function(){
   const grid = document.getElementById('discountRequestsGrid');
@@ -908,12 +1041,10 @@ window.renderDiscountRequests = function(){
   let list = DATA.discountRequests;
   if (search) list = list.filter(r => (r.customer_name||'').toLowerCase().includes(search) || (r.customer_email||'').toLowerCase().includes(search));
   if (filter !== 'all') list = list.filter(r => r.status === filter);
-  
   if (!list.length) {
     grid.innerHTML = `<div class="empty-state" style="grid-column:1/-1;background:white;border-radius:16px;border:2px dashed #e5e7eb"><i class="fab fa-instagram" style="background:linear-gradient(135deg,#833ab4,#fd1d1d,#fcb045);-webkit-background-clip:text;-webkit-text-fill-color:transparent"></i><h3>${search||filter!=='all'?'لا توجد نتائج':'لا توجد طلبات خصم'}</h3></div>`;
     return;
   }
-  
   grid.innerHTML = list.map(r => {
     const statusClass = r.status === 'pending' ? 'pending' : (r.status === 'approved' ? 'approved' : 'rejected');
     const statusLabel = r.status === 'pending' ? 'قيد المراجعة' : (r.status === 'approved' ? 'موافق عليه' : 'مرفوض');
@@ -923,10 +1054,7 @@ window.renderDiscountRequests = function(){
       <div class="discount-request-card status-${statusClass}">
         <div class="discount-req-head">
           <div class="discount-req-avatar">${initial}</div>
-          <div class="discount-req-info">
-            <h4>${r.customer_name || '—'}</h4>
-            <small>${r.customer_email || '—'}</small>
-          </div>
+          <div class="discount-req-info"><h4>${r.customer_name || '—'}</h4><small>${r.customer_email || '—'}</small></div>
           <span class="discount-req-status-badge ${statusClass}"><i class="fas ${statusIcon}"></i> ${statusLabel}</span>
         </div>
         ${r.screenshot ? `<img src="${r.screenshot}" class="discount-req-screenshot" onclick="openImage('${r.screenshot}')">` : ''}
@@ -961,11 +1089,8 @@ window.openDiscountApprove = function(reqId){
   setDiscountScope('all');
   selectedProductIds.clear();
   renderProductsCheckList();
-  
-  // ابحث عن customer_id
   const customer = DATA.customers.find(c => c.email === req.customer_email);
   document.getElementById('approveCustomerId').value = customer ? customer.id : '';
-  
   document.getElementById('discountApproveModal').classList.add('active');
 };
 
@@ -985,78 +1110,45 @@ function renderProductsCheckList(){
     <label class="product-check-item ${selectedProductIds.has(p.id) ? 'selected' : ''}">
       <input type="checkbox" ${selectedProductIds.has(p.id) ? 'checked' : ''} onchange="toggleProductSelection('${p.id}', this.checked)">
       <img src="${p.img || IMG_PLACEHOLDER}">
-      <div class="pc-info">
-        <h6>${p.name}</h6>
-        <small>${formatUSD(p.price)}</small>
-      </div>
+      <div class="pc-info"><h6>${p.name}</h6><small>${formatUSD(p.price)}</small></div>
     </label>
   `).join('');
   document.getElementById('selectedCount').textContent = `${selectedProductIds.size} منتج مختار`;
 }
 
-window.toggleProductSelection = function(id, checked){
-  if (checked) selectedProductIds.add(id);
-  else selectedProductIds.delete(id);
-  renderProductsCheckList();
-};
-
-window.selectAllProducts = function(){
-  DATA.products.forEach(p => selectedProductIds.add(p.id));
-  renderProductsCheckList();
-};
-
-window.deselectAllProducts = function(){
-  selectedProductIds.clear();
-  renderProductsCheckList();
-};
+window.toggleProductSelection = function(id, checked){ if (checked) selectedProductIds.add(id); else selectedProductIds.delete(id); renderProductsCheckList(); };
+window.selectAllProducts = function(){ DATA.products.forEach(p => selectedProductIds.add(p.id)); renderProductsCheckList(); };
+window.deselectAllProducts = function(){ selectedProductIds.clear(); renderProductsCheckList(); };
 
 window.approveDiscount = async function(){
   const reqId = document.getElementById('approveReqId').value;
-  const email = document.getElementById('approveCustomerEmail').value;
   const customerId = document.getElementById('approveCustomerId').value;
   const percent = parseFloat(document.getElementById('discountPercent').value);
   const days = parseInt(document.getElementById('discountDays').value);
-  
   if (!percent || percent < 1 || percent > 100) return showToast('⚠️ نسبة الخصم غير صحيحة', 'error');
   if (!days || days < 1) return showToast('⚠️ المدة غير صحيحة', 'error');
   if (discountScopeMode === 'selected' && selectedProductIds.size === 0) return showToast('⚠️ اختر منتجاً واحداً على الأقل', 'error');
-  
   if (!customerId) return showToast('⚠️ لم يتم العثور على حساب العميل', 'error');
-  
   const now = new Date();
   const endDate = new Date(now.getTime() + days * 24 * 60 * 60 * 1000);
-  
   const discountData = {
-    active: true,
-    percent: percent,
-    scope: discountScopeMode,
+    active: true, percent: percent, scope: discountScopeMode,
     product_ids: discountScopeMode === 'selected' ? Array.from(selectedProductIds) : [],
-    start_date: now.toISOString(),
-    end_date: endDate.toISOString(),
-    granted_at: now.toISOString(),
-    days: days
+    start_date: now.toISOString(), end_date: endDate.toISOString(),
+    granted_at: now.toISOString(), days: days
   };
-  
   try {
-    // تحديث حساب العميل
     await updateDoc(doc(db, 'customers', String(customerId)), { discount: discountData });
-    // تحديث الطلب
     await updateDoc(doc(db, 'discount_requests', String(reqId)), {
-      status: 'approved',
-      discount_percent: percent,
-      discount_days: days,
-      discount_scope: discountScopeMode,
-      discount_product_ids: discountData.product_ids,
-      approved_at: now.toISOString(),
-      approved_at_formatted: now.toLocaleDateString('ar-EG'),
+      status: 'approved', discount_percent: percent, discount_days: days,
+      discount_scope: discountScopeMode, discount_product_ids: discountData.product_ids,
+      approved_at: now.toISOString(), approved_at_formatted: now.toLocaleDateString('ar-EG'),
       end_date: endDate.toISOString()
     });
     showToast('✅ تم تفعيل الخصم على حساب العميل');
     closeDiscountApprove();
     await loadAllFromFirebase();
-    renderDiscountRequests();
-    renderCustomersTable();
-    renderDashboard();
+    renderDiscountRequests(); renderCustomersTable(); renderDashboard();
   } catch(e){ console.error(e); showToast('❌ فشل التفعيل', 'error'); }
 };
 
@@ -1064,15 +1156,9 @@ window.rejectDiscount = async function(reqId){
   const reason = prompt('سبب الرفض (اختياري):');
   if (reason === null) return;
   try {
-    await updateDoc(doc(db, 'discount_requests', String(reqId)), {
-      status: 'rejected',
-      reject_reason: reason || '',
-      rejected_at: new Date().toISOString()
-    });
+    await updateDoc(doc(db, 'discount_requests', String(reqId)), { status: 'rejected', reject_reason: reason || '', rejected_at: new Date().toISOString() });
     showToast('✅ تم رفض الطلب');
-    await loadAllFromFirebase();
-    renderDiscountRequests();
-    renderDashboard();
+    await loadAllFromFirebase(); renderDiscountRequests(); renderDashboard();
   } catch(e){ showToast('❌ فشل', 'error'); }
 };
 
@@ -1081,16 +1167,11 @@ window.deleteDiscountRequest = async function(reqId){
   try {
     await deleteDoc(doc(db, 'discount_requests', String(reqId)));
     showToast('✅ تم الحذف');
-    await loadAllFromFirebase();
-    renderDiscountRequests();
-    renderDashboard();
+    await loadAllFromFirebase(); renderDiscountRequests(); renderDashboard();
   } catch(e){ showToast('❌ فشل', 'error'); }
 };
 
-window.openImage = function(url){
-  document.getElementById('receiptImage').src = url;
-  document.getElementById('receiptModal').classList.add('active');
-};
+window.openImage = function(url){ document.getElementById('receiptImage').src = url; document.getElementById('receiptModal').classList.add('active'); };
 window.closeReceiptModal = () => document.getElementById('receiptModal').classList.remove('active');
 
 // ============ PRODUCTS ============
@@ -1100,10 +1181,7 @@ window.renderProductsTable = function(){
   const search = (document.getElementById('productsSearch')?.value || '').toLowerCase().trim();
   let list = DATA.products;
   if (search) list = list.filter(p => (p.name||'').toLowerCase().includes(search) || getCatName(p.cat).toLowerCase().includes(search));
-  if (!list.length) {
-    table.innerHTML = `<tr><td colspan="7" class="empty-state" style="padding:60px"><i class="fas fa-box-open"></i><h3>${search?'لا توجد نتائج':'لا توجد منتجات'}</h3></td></tr>`;
-    return;
-  }
+  if (!list.length) { table.innerHTML = `<tr><td colspan="7" class="empty-state" style="padding:60px"><i class="fas fa-box-open"></i><h3>${search?'لا توجد نتائج':'لا توجد منتجات'}</h3></td></tr>`; return; }
   table.innerHTML = list.map(p => {
     const usd = Number(p.price)||0;
     const try_ = p.price_try!=null ? Number(p.price_try) : usd * DEFAULT_RATES.TRY;
@@ -1111,15 +1189,7 @@ window.renderProductsTable = function(){
     const badgeInfo = p.badge && BADGE_LABELS[p.badge] ? `<span class="badge ${p.badge==='discount'?'discount':p.badge==='new'?'new':'warning'}">${BADGE_LABELS[p.badge]}</span>` : '<span style="color:#94a3b8;font-size:0.8rem">—</span>';
     const bundleCount = Array.isArray(p.bundle) ? p.bundle.length : 0;
     const bundleInfo = bundleCount > 0 ? `<span class="badge success"><i class="fas fa-gift"></i> ${bundleCount}</span>` : '<span style="color:#94a3b8;font-size:0.8rem">—</span>';
-    return `<tr>
-      <td><img src="${p.img||IMG_PLACEHOLDER}"></td>
-      <td style="font-weight:800">${p.name}</td>
-      <td><span class="badge new">${getCatName(p.cat)}</span></td>
-      <td>${badgeInfo}</td>
-      <td>${bundleInfo}</td>
-      <td><div style="font-size:0.78rem;font-weight:800;line-height:1.5"><div style="color:#059669">${formatUSD(usd)}</div><div style="color:#dc2626">${formatTRY(try_)}</div><div style="color:#b91c1c">${formatSYP(syr)}</div></div></td>
-      <td><div class="table-actions"><button class="btn-icon" onclick="editProduct('${p.id}')"><i class="fas fa-edit"></i></button><button class="btn-icon danger" onclick="deleteProduct('${p.id}')"><i class="fas fa-trash"></i></button></div></td>
-    </tr>`;
+    return `<tr><td><img src="${p.img||IMG_PLACEHOLDER}"></td><td style="font-weight:800">${p.name}</td><td><span class="badge new">${getCatName(p.cat)}</span></td><td>${badgeInfo}</td><td>${bundleInfo}</td><td><div style="font-size:0.78rem;font-weight:800;line-height:1.5"><div style="color:#059669">${formatUSD(usd)}</div><div style="color:#dc2626">${formatTRY(try_)}</div><div style="color:#b91c1c">${formatSYP(syr)}</div></div></td><td><div class="table-actions"><button class="btn-icon" onclick="editProduct('${p.id}')"><i class="fas fa-edit"></i></button><button class="btn-icon danger" onclick="deleteProduct('${p.id}')"><i class="fas fa-trash"></i></button></div></td></tr>`;
   }).join('');
 };
 
@@ -1158,17 +1228,8 @@ window.removeBundleItem = function(idx){ currentBundleItems.splice(idx, 1); rend
 
 function renderBundleList(){
   const list = document.getElementById('bundleList');
-  if (!currentBundleItems.length) {
-    list.innerHTML = `<div class="bundle-empty"><i class="fas fa-inbox" style="margin-left:6px"></i> لا توجد منتجات مرفقة بعد</div>`;
-    return;
-  }
-  list.innerHTML = currentBundleItems.map((item, idx) => `
-    <div class="bundle-item">
-      <img src="${item.img||IMG_PLACEHOLDER}">
-      <div class="bundle-item-info"><h6>${item.name}</h6><div class="b-price">${item.free ? '<span class="free-tag">🎁 مجاني</span>' : `<span>سعر خاص: ${formatUSD(item.price)}</span>`}</div></div>
-      <button class="b-remove" onclick="removeBundleItem(${idx})"><i class="fas fa-times"></i></button>
-    </div>
-  `).join('');
+  if (!currentBundleItems.length) { list.innerHTML = `<div class="bundle-empty"><i class="fas fa-inbox" style="margin-left:6px"></i> لا توجد منتجات مرفقة بعد</div>`; return; }
+  list.innerHTML = currentBundleItems.map((item, idx) => `<div class="bundle-item"><img src="${item.img||IMG_PLACEHOLDER}"><div class="bundle-item-info"><h6>${item.name}</h6><div class="b-price">${item.free ? '<span class="free-tag">🎁 مجاني</span>' : `<span>سعر خاص: ${formatUSD(item.price)}</span>`}</div></div><button class="b-remove" onclick="removeBundleItem(${idx})"><i class="fas fa-times"></i></button></div>`).join('');
 }
 
 function fillBundleProductSelect(){
@@ -1192,7 +1253,6 @@ window.openProductModal = function(id=null){
   document.getElementById('bundleFreeCheck').checked = false;
   document.getElementById('bundlePrice').value = '';
   document.getElementById('bundlePrice').disabled = false;
-
   if (id){
     const p = DATA.products.find(x => String(x.id)===String(id));
     if (p){
@@ -1316,13 +1376,7 @@ window.renderCategoriesTable = function(){
     const count = DATA.products.filter(p => p.cat === c.id).length;
     const isImg = c.icon && (c.icon.startsWith('data:') || c.icon.startsWith('http'));
     const iconHTML = isImg ? `<img src="${c.icon}" style="width:100%;height:100%;object-fit:cover">` : `<i class="fas ${c.icon || 'fa-tag'}"></i>`;
-    return `<tr>
-      <td><div style="width:48px;height:48px;border-radius:12px;background:linear-gradient(135deg,#dc2626,#991b1b);color:white;display:flex;align-items:center;justify-content:center;font-size:1.1rem;overflow:hidden">${iconHTML}</div></td>
-      <td style="font-weight:800">${c.name || '—'}</td>
-      <td><span class="badge new">${count} منتج</span></td>
-      <td style="font-weight:800;color:var(--gray)">${c.order || 0}</td>
-      <td><div class="table-actions"><button class="btn-icon" onclick="editCategory('${c.id}')"><i class="fas fa-edit"></i></button><button class="btn-icon danger" onclick="deleteCategory('${c.id}')"><i class="fas fa-trash"></i></button></div></td>
-    </tr>`;
+    return `<tr><td><div style="width:48px;height:48px;border-radius:12px;background:linear-gradient(135deg,#dc2626,#991b1b);color:white;display:flex;align-items:center;justify-content:center;font-size:1.1rem;overflow:hidden">${iconHTML}</div></td><td style="font-weight:800">${c.name || '—'}</td><td><span class="badge new">${count} منتج</span></td><td style="font-weight:800;color:var(--gray)">${c.order || 0}</td><td><div class="table-actions"><button class="btn-icon" onclick="editCategory('${c.id}')"><i class="fas fa-edit"></i></button><button class="btn-icon danger" onclick="deleteCategory('${c.id}')"><i class="fas fa-trash"></i></button></div></td></tr>`;
   }).join('');
 };
 
@@ -1506,8 +1560,19 @@ window.deleteOrder = async function(id){
 window.renderCustomersTable = function(){
   const table = document.getElementById('customersTable');
   if (!table) return;
-  if (!DATA.customers.length) { table.innerHTML = `<tr><td colspan="6" class="empty-state" style="padding:60px"><i class="fas fa-user-friends"></i><h3>لا يوجد عملاء</h3></td></tr>`; return; }
-  table.innerHTML = DATA.customers.map(c => {
+  const search = (document.getElementById('customersSearch')?.value || '').toLowerCase().trim();
+  let list = DATA.customers;
+  if (search) list = list.filter(c => 
+    (c.name||'').toLowerCase().includes(search) || 
+    (c.email||'').toLowerCase().includes(search) || 
+    (c.phone||'').toLowerCase().includes(search) || 
+    (c.city||'').toLowerCase().includes(search)
+  );
+  if (!list.length) { 
+    table.innerHTML = `<tr><td colspan="6" class="empty-state" style="padding:60px"><i class="fas fa-user-friends"></i><h3>${search ? 'لا توجد نتائج' : 'لا يوجد عملاء'}</h3></td></tr>`; 
+    return; 
+  }
+  table.innerHTML = list.map(c => {
     let discountBadge = '<span style="color:#94a3b8;font-size:0.8rem">—</span>';
     if (c.discount && c.discount.active) {
       const end = c.discount.end_date ? new Date(c.discount.end_date) : null;
@@ -1536,12 +1601,8 @@ window.renderCustomersTable = function(){
 
 window.removeCustomerDiscount = async function(id){
   if (!confirm('إلغاء خصم هذا العميل؟')) return;
-  try {
-    await updateDoc(doc(db, 'customers', String(id)), { discount: null });
-    showToast('✅ تم إلغاء الخصم');
-    await loadAllFromFirebase();
-    renderCustomersTable();
-  } catch(e){ showToast('❌ فشل', 'error'); }
+  try { await updateDoc(doc(db, 'customers', String(id)), { discount: null }); showToast('✅ تم إلغاء الخصم'); await loadAllFromFirebase(); renderCustomersTable(); }
+  catch(e){ showToast('❌ فشل', 'error'); }
 };
 
 window.deleteCustomer = async function(id){
@@ -1589,11 +1650,8 @@ window.closeOrderStatusModal = () => document.getElementById('orderStatusModal')
 window.saveOrderStatus = async function(){
   const id = document.getElementById('orderStatusId').value;
   const newStatus = document.getElementById('orderNewStatus').value;
-  try {
-    await updateDoc(doc(db, 'orders', String(id)), {status: newStatus, status_label: STATUS_LABELS[newStatus].label});
-    showToast('✅ تم التحديث');
-    closeOrderStatusModal(); await loadAllFromFirebase(); renderOrdersCards(); renderDashboard();
-  } catch(e){ showToast('❌ فشل', 'error'); }
+  try { await updateDoc(doc(db, 'orders', String(id)), {status: newStatus, status_label: STATUS_LABELS[newStatus].label}); showToast('✅ تم التحديث'); closeOrderStatusModal(); await loadAllFromFirebase(); renderOrdersCards(); renderDashboard(); }
+  catch(e){ showToast('❌ فشل', 'error'); }
 };
 
 // ============ NAVIGATION ============
@@ -1651,13 +1709,7 @@ if (!document.getElementById('orderStatusModal')) {
   div.className = 'modal';
   div.id = 'orderStatusModal';
   div.onclick = e => { if (e.target === div) closeOrderStatusModal(); };
-  div.innerHTML = `<div class="modal-content" style="max-width:480px">
-    <div class="modal-header"><div class="modal-title"><i class="fas fa-edit"></i><span>تغيير حالة الطلب</span></div><button class="modal-close" onclick="closeOrderStatusModal()"><i class="fas fa-times"></i></button></div>
-    <div class="modal-body"><input type="hidden" id="orderStatusId"><label class="form-label">اختر الحالة الجديدة</label>
-      <select class="form-control" id="orderNewStatus"><option value="pending">مراجعة الدفع</option><option value="processing">قيد التجهيز</option><option value="shipping">في الطريق</option><option value="delivered">تم التسليم</option><option value="cancelled">ملغى</option></select>
-      <div class="form-actions"><button class="btn btn-outline" onclick="closeOrderStatusModal()">إلغاء</button><button class="btn btn-primary" onclick="saveOrderStatus()">حفظ</button></div>
-    </div>
-  </div>`;
+  div.innerHTML = `<div class="modal-content" style="max-width:480px"><div class="modal-header"><div class="modal-title"><i class="fas fa-edit"></i><span>تغيير حالة الطلب</span></div><button class="modal-close" onclick="closeOrderStatusModal()"><i class="fas fa-times"></i></button></div><div class="modal-body"><input type="hidden" id="orderStatusId"><label class="form-label">اختر الحالة الجديدة</label><select class="form-control" id="orderNewStatus"><option value="pending">مراجعة الدفع</option><option value="processing">قيد التجهيز</option><option value="shipping">في الطريق</option><option value="delivered">تم التسليم</option><option value="cancelled">ملغى</option></select><div class="form-actions"><button class="btn btn-outline" onclick="closeOrderStatusModal()">إلغاء</button><button class="btn btn-primary" onclick="saveOrderStatus()">حفظ</button></div></div></div>`;
   document.body.appendChild(div);
 }
 
