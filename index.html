@@ -94,7 +94,6 @@ input,textarea,select{font-family:inherit;outline:none;font-size:16px;border:non
 
 .section-title-row{display:flex;align-items:center;gap:10px;margin:20px 0 14px;font-family:'Almarai',sans-serif;font-size:1.05rem;font-weight:800;color:var(--dark)}
 .section-title-row .bar{width:4px;height:20px;border-radius:4px;background:linear-gradient(180deg,var(--primary),var(--gold))}
-.section-title-row .sub{font-size:0.78rem;color:var(--gray);font-weight:700;margin-right:auto}
 
 .card{background:white;border-radius:var(--radius-lg);border:1.5px solid #f1f5f9;overflow:hidden;margin-bottom:20px}
 .card-header{padding:20px 24px;border-bottom:1.5px solid #f1f5f9;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
@@ -200,7 +199,6 @@ textarea.form-control{min-height:90px;resize:vertical}
 .icon-upload-row{display:flex;gap:12px;align-items:center;margin-bottom:14px;flex-wrap:wrap}
 .icon-preview{width:64px;height:64px;border-radius:14px;background:linear-gradient(135deg,#dc2626,#991b1b);display:flex;align-items:center;justify-content:center;font-size:1.6rem;color:white;flex-shrink:0;overflow:hidden;border:2px solid white;box-shadow:0 4px 12px rgba(220,38,38,0.3)}
 .icon-preview img{width:100%;height:100%;object-fit:cover}
-.icon-preview i{color:white}
 .icon-actions{display:flex;flex-direction:column;gap:6px;flex:1;min-width:180px}
 
 .icon-library{display:grid;grid-template-columns:repeat(auto-fill,minmax(56px,1fr));gap:8px;max-height:280px;overflow-y:auto;padding:10px;background:#f8fafc;border:1.5px solid #e5e7eb;border-radius:12px;margin-top:10px}
@@ -217,7 +215,6 @@ textarea.form-control{min-height:90px;resize:vertical}
 .discount-request-card.status-rejected::before{background:linear-gradient(180deg,#ef4444,#b91c1c)}
 .discount-req-head{display:flex;gap:12px;margin-bottom:12px}
 .discount-req-avatar{width:48px;height:48px;border-radius:50%;background:linear-gradient(135deg,#833ab4,#fd1d1d);color:white;font-weight:900;font-size:1.2rem;display:flex;align-items:center;justify-content:center;flex-shrink:0;overflow:hidden}
-.discount-req-avatar img{width:100%;height:100%;object-fit:cover}
 .discount-req-info{flex:1;min-width:0}
 .discount-req-info h4{font-size:0.95rem;font-weight:900;margin-bottom:3px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .discount-req-info small{font-size:0.75rem;color:var(--gray);font-weight:700;display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
@@ -228,7 +225,6 @@ textarea.form-control{min-height:90px;resize:vertical}
 .discount-req-screenshot{width:100%;border-radius:12px;border:2px solid #f1f5f9;cursor:zoom-in;max-height:220px;object-fit:cover;margin-bottom:10px;transition:.2s}
 .discount-req-screenshot:hover{transform:scale(1.02);border-color:#833ab4}
 .discount-req-meta{font-size:0.78rem;color:var(--gray);font-weight:700;margin-bottom:10px;display:flex;flex-wrap:wrap;gap:8px}
-.discount-req-meta span{display:inline-flex;align-items:center;gap:4px}
 .discount-req-actions{display:flex;gap:6px;flex-wrap:wrap}
 .discount-req-actions button{flex:1;padding:9px;border-radius:9px;font-size:0.82rem;font-weight:900;min-width:90px}
 
@@ -269,6 +265,11 @@ textarea.form-control{min-height:90px;resize:vertical}
 .logo-card .logo-btns{display:flex;gap:8px;flex-wrap:wrap;justify-content:center}
 
 .customer-discount-badge{background:linear-gradient(135deg,#ecfdf5,#d1fae5);color:#059669;padding:3px 10px;border-radius:9999px;font-size:0.72rem;font-weight:900;display:inline-flex;align-items:center;gap:3px}
+
+/* Order detail - delivery info */
+.delivery-badge{display:inline-flex;align-items:center;gap:5px;padding:5px 12px;border-radius:9999px;font-size:0.78rem;font-weight:900}
+.delivery-badge.pickup{background:#dbeafe;color:#1e40af}
+.delivery-badge.shipping{background:#fef3c7;color:#92400e}
 
 @media(max-width:768px){
   .sidebar{transform:translateX(100%)}
@@ -395,10 +396,7 @@ textarea.form-control{min-height:90px;resize:vertical}
 
       <div class="page" id="page-products">
         <div class="toolbar" style="display:flex; gap:12px; margin-bottom:20px; flex-wrap:wrap;">
-          <div style="flex:1; position:relative;">
-            <input type="text" id="productsSearch" placeholder="ابحث عن منتج..." oninput="renderProductsTable()" style="width:100%; padding:12px 44px 12px 16px; border:1.5px solid var(--border); border-radius:11px; font-size:15px; font-weight:600;">
-            <i class="fas fa-search" style="position:absolute; right:16px; top:50%; transform:translateY(-50%); color:var(--gray);"></i>
-          </div>
+          <div style="flex:1; position:relative;"><input type="text" id="productsSearch" placeholder="ابحث عن منتج..." oninput="renderProductsTable()" style="width:100%; padding:12px 44px 12px 16px; border:1.5px solid var(--border); border-radius:11px; font-size:15px; font-weight:600;"><i class="fas fa-search" style="position:absolute; right:16px; top:50%; transform:translateY(-50%); color:var(--gray);"></i></div>
           <button class="btn btn-primary" onclick="openProductModal()"><i class="fas fa-plus"></i><span>إضافة منتج</span></button>
         </div>
         <div class="card"><div class="card-body" style="padding:0"><div class="table-wrap"><table><thead><tr><th>الصورة</th><th>الاسم</th><th>القسم</th><th>الشارة</th><th>العرض</th><th>الأسعار</th><th>إجراءات</th></tr></thead><tbody id="productsTable"></tbody></table></div></div></div>
@@ -406,10 +404,7 @@ textarea.form-control{min-height:90px;resize:vertical}
 
       <div class="page" id="page-categories">
         <div class="toolbar" style="display:flex; gap:12px; margin-bottom:20px; flex-wrap:wrap;">
-          <div style="flex:1; position:relative;">
-            <input type="text" id="categoriesSearch" placeholder="ابحث عن قسم..." oninput="renderCategoriesTable()" style="width:100%; padding:12px 44px 12px 16px; border:1.5px solid var(--border); border-radius:11px; font-size:15px; font-weight:600;">
-            <i class="fas fa-search" style="position:absolute; right:16px; top:50%; transform:translateY(-50%); color:var(--gray);"></i>
-          </div>
+          <div style="flex:1; position:relative;"><input type="text" id="categoriesSearch" placeholder="ابحث عن قسم..." oninput="renderCategoriesTable()" style="width:100%; padding:12px 44px 12px 16px; border:1.5px solid var(--border); border-radius:11px; font-size:15px; font-weight:600;"><i class="fas fa-search" style="position:absolute; right:16px; top:50%; transform:translateY(-50%); color:var(--gray);"></i></div>
           <button class="btn btn-primary" onclick="openCategoryModal()"><i class="fas fa-plus"></i><span>إضافة قسم</span></button>
         </div>
         <div class="card"><div class="card-body" style="padding:0"><div class="table-wrap"><table><thead><tr><th>الأيقونة</th><th>اسم القسم</th><th>عدد المنتجات</th><th>الترتيب</th><th>إجراءات</th></tr></thead><tbody id="categoriesTable"></tbody></table></div></div></div>
@@ -429,41 +424,29 @@ textarea.form-control{min-height:90px;resize:vertical}
             <option value="delivered">تم التسليم</option>
             <option value="cancelled">ملغى</option>
           </select>
-          <button class="btn btn-danger" onclick="deleteAllOrders()" style="padding:12px 18px;">
-            <i class="fas fa-trash-alt"></i><span>حذف الكل</span>
-          </button>
+          <button class="btn btn-danger" onclick="deleteAllOrders()" style="padding:12px 18px;"><i class="fas fa-trash-alt"></i><span>حذف الكل</span></button>
         </div>
         <div class="orders-grid" id="ordersGrid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:14px"></div>
       </div>
 
       <div class="page" id="page-customers">
         <div class="toolbar" style="display:flex; gap:12px; margin-bottom:20px; flex-wrap:wrap;">
-          <div style="flex:1; position:relative;min-width:200px;">
-            <input type="text" id="customersSearch" placeholder="ابحث بالاسم أو البريد..." oninput="renderCustomersTable()" style="width:100%; padding:12px 44px 12px 16px; border:1.5px solid var(--border); border-radius:11px; font-size:15px; font-weight:600;">
-            <i class="fas fa-search" style="position:absolute; right:16px; top:50%; transform:translateY(-50%); color:var(--gray);"></i>
-          </div>
-          <button class="btn btn-danger" onclick="deleteAllCustomers()" style="padding:12px 18px;">
-            <i class="fas fa-trash-alt"></i><span>حذف الكل</span>
-          </button>
+          <div style="flex:1; position:relative;min-width:200px;"><input type="text" id="customersSearch" placeholder="ابحث بالاسم أو البريد..." oninput="renderCustomersTable()" style="width:100%; padding:12px 44px 12px 16px; border:1.5px solid var(--border); border-radius:11px; font-size:15px; font-weight:600;"><i class="fas fa-search" style="position:absolute; right:16px; top:50%; transform:translateY(-50%); color:var(--gray);"></i></div>
+          <button class="btn btn-danger" onclick="deleteAllCustomers()" style="padding:12px 18px;"><i class="fas fa-trash-alt"></i><span>حذف الكل</span></button>
         </div>
         <div class="card"><div class="card-body" style="padding:0"><div class="table-wrap"><table><thead><tr><th>الاسم</th><th>البريد</th><th>الهاتف</th><th>المدينة</th><th>الخصم</th><th>إجراءات</th></tr></thead><tbody id="customersTable"></tbody></table></div></div></div>
       </div>
 
       <div class="page" id="page-discounts">
         <div class="toolbar" style="display:flex; gap:12px; margin-bottom:20px; flex-wrap:wrap;">
-          <div style="flex:1; position:relative;min-width:200px;">
-            <input type="text" id="discountsSearch" placeholder="ابحث بالاسم أو البريد..." oninput="renderDiscountRequests()" style="width:100%; padding:12px 44px 12px 16px; border:1.5px solid var(--border); border-radius:11px; font-size:15px; font-weight:600;">
-            <i class="fas fa-search" style="position:absolute; right:16px; top:50%; transform:translateY(-50%); color:var(--gray);"></i>
-          </div>
+          <div style="flex:1; position:relative;min-width:200px;"><input type="text" id="discountsSearch" placeholder="ابحث بالاسم أو البريد..." oninput="renderDiscountRequests()" style="width:100%; padding:12px 44px 12px 16px; border:1.5px solid var(--border); border-radius:11px; font-size:15px; font-weight:600;"><i class="fas fa-search" style="position:absolute; right:16px; top:50%; transform:translateY(-50%); color:var(--gray);"></i></div>
           <select id="discountsFilter" onchange="renderDiscountRequests()" class="form-control" style="width:auto;min-width:180px;padding:12px 14px">
             <option value="all">كل الطلبات</option>
             <option value="pending">قيد المراجعة</option>
             <option value="approved">موافق عليها</option>
             <option value="rejected">مرفوضة</option>
           </select>
-          <button class="btn btn-danger" onclick="deleteAllDiscountRequests()" style="padding:12px 18px;">
-            <i class="fas fa-trash-alt"></i><span>حذف الكل</span>
-          </button>
+          <button class="btn btn-danger" onclick="deleteAllDiscountRequests()" style="padding:12px 18px;"><i class="fas fa-trash-alt"></i><span>حذف الكل</span></button>
         </div>
         <div class="discount-requests-grid" id="discountRequestsGrid"></div>
       </div>
@@ -493,7 +476,6 @@ textarea.form-control{min-height:90px;resize:vertical}
                     <button type="button" class="btn btn-outline" onclick="removeStoreLogo()" style="padding:8px 14px;font-size:0.82rem"><i class="fas fa-trash"></i> حذف</button>
                   </div>
                   <input type="file" id="storeLogoInput" accept="image/*" onchange="handleStoreLogo(event)" style="display:none">
-                  <p style="font-size:0.72rem;color:var(--gray);text-align:center;font-weight:700;margin-top:10px">يظهر في هيدر المتجر والفوتر</p>
                 </div>
                 <div class="logo-card">
                   <label class="form-label" style="margin-bottom:10px"><i class="fas fa-user-shield"></i> لوجو لوحة التحكم</label>
@@ -503,7 +485,6 @@ textarea.form-control{min-height:90px;resize:vertical}
                     <button type="button" class="btn btn-outline" onclick="removeAdminLogo()" style="padding:8px 14px;font-size:0.82rem"><i class="fas fa-trash"></i> حذف</button>
                   </div>
                   <input type="file" id="adminLogoInput" accept="image/*" onchange="handleAdminLogo(event)" style="display:none">
-                  <p style="font-size:0.72rem;color:var(--gray);text-align:center;font-weight:700;margin-top:10px">يظهر في شاشة الدخول والقائمة الجانبية</p>
                 </div>
               </div>
             </div>
@@ -557,9 +538,12 @@ textarea.form-control{min-height:90px;resize:vertical}
       </div>
       <div style="margin-bottom:16px"><label class="form-label">اسم المنتج</label><input type="text" class="form-control" id="productName"></div>
       <div style="margin-bottom:16px"><label class="form-label">القسم</label><select class="form-control" id="productCategory"><option value="">-- اختر --</option></select></div>
-      <label class="form-label" style="margin-bottom:10px"><i class="fas fa-coins" style="color:var(--gold)"></i> الأسعار بالعملات الثلاث</label>
+      <label class="form-label" style="margin-bottom:10px"><i class="fas fa-coins" style="color:var(--gold)"></i> الأسعار بالعملات</label>
+      <div style="background:#dbeafe;border:1.5px solid #3b82f6;border-radius:10px;padding:10px;margin-bottom:14px;font-size:0.8rem;font-weight:800;color:#1e40af">
+        <i class="fas fa-info-circle"></i> الدولار <strong>إجباري</strong> — ليرة تركية وليرة سورية <strong>اختيارية</strong>. إذا تُرك حقل فارغاً، لن يُعرض سعر تلك العملة للعميل.
+      </div>
       <div class="currency-grid">
-        <div class="currency-block"><h5><i class="fas fa-dollar-sign"></i> دولار أمريكي</h5><span class="lbl-sm">السعر الحالي *</span><input type="number" id="productPrice" step="0.01" placeholder="0.00"><span class="lbl-sm">السعر قبل الخصم</span><input type="number" id="productOldPrice" step="0.01" placeholder="0.00"></div>
+        <div class="currency-block"><h5><i class="fas fa-dollar-sign"></i> دولار أمريكي *</h5><span class="lbl-sm">السعر الحالي (مطلوب)</span><input type="number" id="productPrice" step="0.01" placeholder="0.00"><span class="lbl-sm">السعر قبل الخصم</span><input type="number" id="productOldPrice" step="0.01" placeholder="0.00"></div>
         <div class="currency-block"><h5><i class="fas fa-lira-sign"></i> ليرة تركية</h5><span class="lbl-sm">السعر الحالي (اختياري)</span><input type="number" id="productPriceTRY" step="0.01" placeholder="اتركه فارغاً"><span class="lbl-sm">السعر قبل الخصم</span><input type="number" id="productOldPriceTRY" step="0.01" placeholder="0.00"></div>
         <div class="currency-block"><h5><i class="fas fa-money-bill-wave"></i> ليرة سورية</h5><span class="lbl-sm">السعر الحالي (اختياري)</span><input type="number" id="productPriceSYP" step="1" placeholder="اتركه فارغاً"><span class="lbl-sm">السعر قبل الخصم</span><input type="number" id="productOldPriceSYP" step="1" placeholder="0.00"></div>
       </div>
@@ -574,7 +558,7 @@ textarea.form-control{min-height:90px;resize:vertical}
       </div>
       <div class="bundle-section">
         <h4><i class="fas fa-gift"></i> عرض مجمّع (Bundle)</h4>
-        <p>اختر منتجات إضافية تُرفق مع هذا المنتج — إما مجاناً أو بسعر خاص</p>
+        <p>اختر منتجات إضافية تُرفق مع هذا المنتج</p>
         <div class="bundle-list" id="bundleList"></div>
         <div class="bundle-add-row">
           <select id="bundleProductSelect"><option value="">-- اختر منتجاً --</option></select>
@@ -582,8 +566,7 @@ textarea.form-control{min-height:90px;resize:vertical}
           <button type="button" onclick="addBundleItem()"><i class="fas fa-plus"></i> إضافة</button>
         </div>
         <label style="display:flex;align-items:center;gap:8px;margin-top:10px;font-size:0.8rem;font-weight:800;color:#78350f;cursor:pointer">
-          <input type="checkbox" id="bundleFreeCheck" onchange="toggleBundlePrice()" style="width:18px;height:18px;cursor:pointer">
-          إضافة كمنتج مجاني
+          <input type="checkbox" id="bundleFreeCheck" onchange="toggleBundlePrice()" style="width:18px;height:18px;cursor:pointer"> إضافة كمنتج مجاني
         </label>
       </div>
       <div style="margin-top:16px"><label class="form-label">الوصف</label><textarea class="form-control" id="productDesc"></textarea></div>
@@ -674,9 +657,6 @@ textarea.form-control{min-height:90px;resize:vertical}
           <div class="products-checkbox-list" id="productsCheckList"></div>
         </div>
       </div>
-      <div style="background:#ecfdf5;border:1.5px solid #10b981;border-radius:10px;padding:10px;margin-bottom:14px;font-size:0.78rem;color:#059669;font-weight:800;text-align:center">
-        <i class="fas fa-check-circle"></i> سيتم إشعار العميل وتطبيق الخصم تلقائياً على حسابه
-      </div>
       <div class="form-actions">
         <button class="btn btn-outline" onclick="closeDiscountApprove()">إلغاء</button>
         <button class="btn btn-success" onclick="approveDiscount()"><i class="fas fa-check"></i> الموافقة وتفعيل الخصم</button>
@@ -689,30 +669,19 @@ textarea.form-control{min-height:90px;resize:vertical}
 <div class="modal" id="deleteAllModal" onclick="if(event.target===this)closeDeleteAllModal()">
   <div class="modal-content" style="max-width:440px">
     <div class="modal-header">
-      <div class="modal-title" style="color:#dc2626">
-        <i class="fas fa-exclamation-triangle" style="background:linear-gradient(135deg,#ef4444,#b91c1c)"></i>
-        <span>تأكيد الحذف الجماعي</span>
-      </div>
+      <div class="modal-title" style="color:#dc2626"><i class="fas fa-exclamation-triangle" style="background:linear-gradient(135deg,#ef4444,#b91c1c)"></i><span>تأكيد الحذف الجماعي</span></div>
       <button class="modal-close" onclick="closeDeleteAllModal()"><i class="fas fa-times"></i></button>
     </div>
     <div class="modal-body">
       <div style="text-align:center;padding:10px 0 20px">
-        <div style="width:80px;height:80px;margin:0 auto 14px;border-radius:50%;background:linear-gradient(135deg,#fee2e2,#fecaca);display:flex;align-items:center;justify-content:center;color:#dc2626;font-size:2.2rem;box-shadow:0 10px 30px rgba(220,38,38,0.2)">
-          <i class="fas fa-trash-alt"></i>
-        </div>
+        <div style="width:80px;height:80px;margin:0 auto 14px;border-radius:50%;background:linear-gradient(135deg,#fee2e2,#fecaca);display:flex;align-items:center;justify-content:center;color:#dc2626;font-size:2.2rem;box-shadow:0 10px 30px rgba(220,38,38,0.2)"><i class="fas fa-trash-alt"></i></div>
         <h3 style="font-size:1.1rem;font-weight:900;margin-bottom:8px;color:var(--dark)" id="deleteAllTitle">حذف كل السجلات؟</h3>
         <p style="font-size:0.88rem;color:var(--gray);font-weight:700;line-height:1.7" id="deleteAllMsg">سيتم حذف جميع السجلات نهائياً من Firebase. لا يمكن التراجع عن هذه العملية.</p>
-        <div style="background:#fef3c7;border:1.5px solid #f59e0b;border-radius:10px;padding:10px;margin-top:12px;font-size:0.82rem;font-weight:800;color:#92400e">
-          <i class="fas fa-info-circle"></i> عدد السجلات: <span id="deleteAllCount">0</span>
-        </div>
+        <div style="background:#fef3c7;border:1.5px solid #f59e0b;border-radius:10px;padding:10px;margin-top:12px;font-size:0.82rem;font-weight:800;color:#92400e"><i class="fas fa-info-circle"></i> عدد السجلات: <span id="deleteAllCount">0</span></div>
       </div>
       <div class="form-actions" style="flex-direction:column;gap:8px;border-top:1.5px solid #f1f5f9;padding-top:16px;margin-top:0">
-        <button class="btn btn-danger" style="width:100%;justify-content:center;padding:12px" onclick="confirmDeleteAll()" id="deleteAllConfirmBtn">
-          <i class="fas fa-trash-alt"></i><span>نعم، احذف الكل نهائياً</span>
-        </button>
-        <button class="btn btn-outline" style="width:100%;justify-content:center;padding:12px" onclick="closeDeleteAllModal()">
-          <i class="fas fa-times"></i><span>إلغاء</span>
-        </button>
+        <button class="btn btn-danger" style="width:100%;justify-content:center;padding:12px" onclick="confirmDeleteAll()" id="deleteAllConfirmBtn"><i class="fas fa-trash-alt"></i><span>نعم، احذف الكل نهائياً</span></button>
+        <button class="btn btn-outline" style="width:100%;justify-content:center;padding:12px" onclick="closeDeleteAllModal()"><i class="fas fa-times"></i><span>إلغاء</span></button>
       </div>
     </div>
   </div>
@@ -745,7 +714,7 @@ const db = getFirestore(app);
 
 const ADMIN_EMAIL = 'admin@zenobia.com';
 const ADMIN_PASSWORD = 'z789z98zfd';
-const DEFAULT_RATES = { TRY: 32, SYP: 15000 };
+// ⚠️ DEFAULT_RATES أُزيلت — لا يوجد تصريف تلقائي
 
 let DATA = {products:[], categories:[], orders:[], customers:[], discountRequests:[], settings: {}, contact: {}};
 let productImageData = null, galleryImages = [], currentBadge = '';
@@ -960,20 +929,15 @@ function fillCategorySelects(){
 
 // ============ DELETE ALL ============
 window.deleteAllOrders = function(){
-  deleteAllType = 'orders';
-  deleteAllItems = [...DATA.orders];
+  deleteAllType = 'orders'; deleteAllItems = [...DATA.orders];
   openDeleteAllModal('حذف كل الطلبات؟', 'سيتم حذف جميع الطلبات نهائياً من Firebase. لا يمكن التراجع عن هذه العملية.');
 };
-
 window.deleteAllCustomers = function(){
-  deleteAllType = 'customers';
-  deleteAllItems = [...DATA.customers];
+  deleteAllType = 'customers'; deleteAllItems = [...DATA.customers];
   openDeleteAllModal('حذف كل العملاء؟', 'سيتم حذف جميع حسابات العملاء نهائياً. سيخسر العملاء خصوماتهم أيضاً.');
 };
-
 window.deleteAllDiscountRequests = function(){
-  deleteAllType = 'discount_requests';
-  deleteAllItems = [...DATA.discountRequests];
+  deleteAllType = 'discount_requests'; deleteAllItems = [...DATA.discountRequests];
   openDeleteAllModal('حذف كل طلبات الخصم؟', 'سيتم حذف جميع طلبات خصم الانستغرام نهائياً من Firebase. لن تتأثر الخصومات المفعّلة على حسابات العملاء.');
 };
 
@@ -986,23 +950,19 @@ function openDeleteAllModal(title, msg){
 
 window.closeDeleteAllModal = function(){
   document.getElementById('deleteAllModal').classList.remove('active');
-  deleteAllType = null;
-  deleteAllItems = [];
+  deleteAllType = null; deleteAllItems = [];
 };
 
 window.confirmDeleteAll = async function(){
   if (!deleteAllType || !deleteAllItems.length) { closeDeleteAllModal(); return; }
-  
   const btn = document.getElementById('deleteAllConfirmBtn');
   const originalHTML = btn.innerHTML;
   btn.disabled = true;
   btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i><span>جاري الحذف...</span>';
-  
   try {
     const CHUNK_SIZE = 400;
     const total = deleteAllItems.length;
     let deleted = 0;
-    
     for (let i = 0; i < total; i += CHUNK_SIZE) {
       const chunk = deleteAllItems.slice(i, i + CHUNK_SIZE);
       const batch = writeBatch(db);
@@ -1011,19 +971,15 @@ window.confirmDeleteAll = async function(){
       deleted += chunk.length;
       btn.innerHTML = `<i class="fas fa-spinner fa-spin"></i><span>تم حذف ${deleted} من ${total}...</span>`;
     }
-    
     const labels = { orders: 'طلبات', customers: 'عملاء', discount_requests: 'طلبات خصم' };
     showToast(`✅ تم حذف ${total} ${labels[deleteAllType] || 'سجل'} بنجاح`);
-    
     closeDeleteAllModal();
     await loadAllFromFirebase();
-    
     const cp = document.querySelector('.page.active')?.id?.replace('page-','');
     if(cp === 'orders') renderOrdersCards();
     if(cp === 'customers') renderCustomersTable();
     if(cp === 'discounts') renderDiscountRequests();
     if(cp === 'dashboard') renderDashboard();
-    
   } catch(err){
     console.error(err);
     showToast('❌ فشل الحذف: ' + err.message, 'error');
@@ -1131,20 +1087,10 @@ window.approveDiscount = async function(){
   if (!customerId) return showToast('⚠️ لم يتم العثور على حساب العميل', 'error');
   const now = new Date();
   const endDate = new Date(now.getTime() + days * 24 * 60 * 60 * 1000);
-  const discountData = {
-    active: true, percent: percent, scope: discountScopeMode,
-    product_ids: discountScopeMode === 'selected' ? Array.from(selectedProductIds) : [],
-    start_date: now.toISOString(), end_date: endDate.toISOString(),
-    granted_at: now.toISOString(), days: days
-  };
+  const discountData = { active: true, percent, scope: discountScopeMode, product_ids: discountScopeMode === 'selected' ? Array.from(selectedProductIds) : [], start_date: now.toISOString(), end_date: endDate.toISOString(), granted_at: now.toISOString(), days };
   try {
     await updateDoc(doc(db, 'customers', String(customerId)), { discount: discountData });
-    await updateDoc(doc(db, 'discount_requests', String(reqId)), {
-      status: 'approved', discount_percent: percent, discount_days: days,
-      discount_scope: discountScopeMode, discount_product_ids: discountData.product_ids,
-      approved_at: now.toISOString(), approved_at_formatted: now.toLocaleDateString('ar-EG'),
-      end_date: endDate.toISOString()
-    });
+    await updateDoc(doc(db, 'discount_requests', String(reqId)), { status: 'approved', discount_percent: percent, discount_days: days, discount_scope: discountScopeMode, discount_product_ids: discountData.product_ids, approved_at: now.toISOString(), approved_at_formatted: now.toLocaleDateString('ar-EG'), end_date: endDate.toISOString() });
     showToast('✅ تم تفعيل الخصم على حساب العميل');
     closeDiscountApprove();
     await loadAllFromFirebase();
@@ -1155,20 +1101,14 @@ window.approveDiscount = async function(){
 window.rejectDiscount = async function(reqId){
   const reason = prompt('سبب الرفض (اختياري):');
   if (reason === null) return;
-  try {
-    await updateDoc(doc(db, 'discount_requests', String(reqId)), { status: 'rejected', reject_reason: reason || '', rejected_at: new Date().toISOString() });
-    showToast('✅ تم رفض الطلب');
-    await loadAllFromFirebase(); renderDiscountRequests(); renderDashboard();
-  } catch(e){ showToast('❌ فشل', 'error'); }
+  try { await updateDoc(doc(db, 'discount_requests', String(reqId)), { status: 'rejected', reject_reason: reason || '', rejected_at: new Date().toISOString() }); showToast('✅ تم رفض الطلب'); await loadAllFromFirebase(); renderDiscountRequests(); renderDashboard(); }
+  catch(e){ showToast('❌ فشل', 'error'); }
 };
 
 window.deleteDiscountRequest = async function(reqId){
   if (!confirm('حذف هذا الطلب نهائياً؟')) return;
-  try {
-    await deleteDoc(doc(db, 'discount_requests', String(reqId)));
-    showToast('✅ تم الحذف');
-    await loadAllFromFirebase(); renderDiscountRequests(); renderDashboard();
-  } catch(e){ showToast('❌ فشل', 'error'); }
+  try { await deleteDoc(doc(db, 'discount_requests', String(reqId))); showToast('✅ تم الحذف'); await loadAllFromFirebase(); renderDiscountRequests(); renderDashboard(); }
+  catch(e){ showToast('❌ فشل', 'error'); }
 };
 
 window.openImage = function(url){ document.getElementById('receiptImage').src = url; document.getElementById('receiptModal').classList.add('active'); };
@@ -1184,12 +1124,12 @@ window.renderProductsTable = function(){
   if (!list.length) { table.innerHTML = `<tr><td colspan="7" class="empty-state" style="padding:60px"><i class="fas fa-box-open"></i><h3>${search?'لا توجد نتائج':'لا توجد منتجات'}</h3></td></tr>`; return; }
   table.innerHTML = list.map(p => {
     const usd = Number(p.price)||0;
-    const try_ = p.price_try!=null ? Number(p.price_try) : usd * DEFAULT_RATES.TRY;
-    const syr = p.price_syr!=null ? Number(p.price_syr) : usd * DEFAULT_RATES.SYP;
+    const try_ = p.price_try != null && p.price_try !== '' ? Number(p.price_try) : null;
+    const syr = p.price_syr != null && p.price_syr !== '' ? Number(p.price_syr) : null;
     const badgeInfo = p.badge && BADGE_LABELS[p.badge] ? `<span class="badge ${p.badge==='discount'?'discount':p.badge==='new'?'new':'warning'}">${BADGE_LABELS[p.badge]}</span>` : '<span style="color:#94a3b8;font-size:0.8rem">—</span>';
     const bundleCount = Array.isArray(p.bundle) ? p.bundle.length : 0;
     const bundleInfo = bundleCount > 0 ? `<span class="badge success"><i class="fas fa-gift"></i> ${bundleCount}</span>` : '<span style="color:#94a3b8;font-size:0.8rem">—</span>';
-    return `<tr><td><img src="${p.img||IMG_PLACEHOLDER}"></td><td style="font-weight:800">${p.name}</td><td><span class="badge new">${getCatName(p.cat)}</span></td><td>${badgeInfo}</td><td>${bundleInfo}</td><td><div style="font-size:0.78rem;font-weight:800;line-height:1.5"><div style="color:#059669">${formatUSD(usd)}</div><div style="color:#dc2626">${formatTRY(try_)}</div><div style="color:#b91c1c">${formatSYP(syr)}</div></div></td><td><div class="table-actions"><button class="btn-icon" onclick="editProduct('${p.id}')"><i class="fas fa-edit"></i></button><button class="btn-icon danger" onclick="deleteProduct('${p.id}')"><i class="fas fa-trash"></i></button></div></td></tr>`;
+    return `<tr><td><img src="${p.img||IMG_PLACEHOLDER}"></td><td style="font-weight:800">${p.name}</td><td><span class="badge new">${getCatName(p.cat)}</span></td><td>${badgeInfo}</td><td>${bundleInfo}</td><td><div style="font-size:0.78rem;font-weight:800;line-height:1.5"><div style="color:#059669">${formatUSD(usd)}</div>${try_ != null ? `<div style="color:#dc2626">${formatTRY(try_)}</div>` : '<div style="color:#94a3b8;font-size:0.7rem">TRY: —</div>'}${syr != null ? `<div style="color:#b91c1c">${formatSYP(syr)}</div>` : '<div style="color:#94a3b8;font-size:0.7rem">SYP: —</div>'}</div></td><td><div class="table-actions"><button class="btn-icon" onclick="editProduct('${p.id}')"><i class="fas fa-edit"></i></button><button class="btn-icon danger" onclick="deleteProduct('${p.id}')"><i class="fas fa-trash"></i></button></div></td></tr>`;
   }).join('');
 };
 
@@ -1482,10 +1422,16 @@ window.renderOrdersCards = function(){
   }
   grid.innerHTML = list.map(o => {
     const usd = o.total_usd||0;
-    const try_ = o.total_try || usd * DEFAULT_RATES.TRY;
-    const syr = o.total_syr || usd * DEFAULT_RATES.SYP;
+    const try_ = o.total_try;
+    const syr = o.total_syr;
     const itemsCount = Array.isArray(o.items) ? o.items.reduce((s,i)=>s+(i.qty||1),0) : 0;
     const st = STATUS_LABELS[o.status] || STATUS_LABELS.pending;
+    const deliveryBadge = o.delivery_method === 'shipping' 
+      ? '<span class="delivery-badge shipping"><i class="fas fa-truck"></i> شحن</span>' 
+      : '<span class="delivery-badge pickup"><i class="fas fa-store"></i> من المكتبة</span>';
+    let totalsHTML = `<span style="background:#fef2f2;color:var(--primary-dark);padding:5px 10px;border-radius:8px;font-size:0.78rem;font-weight:900">${formatUSD(usd)}</span>`;
+    if (try_ != null) totalsHTML += `<span style="background:#fef2f2;color:var(--primary-dark);padding:5px 10px;border-radius:8px;font-size:0.78rem;font-weight:900">${formatTRY(try_)}</span>`;
+    if (syr != null) totalsHTML += `<span style="background:#fef2f2;color:var(--primary-dark);padding:5px 10px;border-radius:8px;font-size:0.78rem;font-weight:900">${formatSYP(syr)}</span>`;
     return `<div class="order-card" onclick="openOrderDetail('${o.id}')" style="background:white;border:1.5px solid #f1f5f9;border-radius:16px;padding:16px;cursor:pointer;transition:.2s;position:relative;overflow:hidden">
       <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;gap:8px">
         <div style="display:inline-flex;align-items:center;gap:6px;background:#f8fafc;border:1.5px dashed #cbd5e1;padding:6px 10px;border-radius:8px;font-family:monospace;font-weight:900;font-size:0.85rem;color:var(--dark);direction:ltr">${o.order_number}</div>
@@ -1495,12 +1441,9 @@ window.renderOrdersCards = function(){
       <div style="font-size:0.78rem;color:var(--gray);font-weight:700;margin-bottom:10px;display:flex;flex-wrap:wrap;gap:8px">
         <span><i class="fas fa-calendar"></i> ${o.created_at_formatted || '-'}</span>
         ${itemsCount ? `<span><i class="fas fa-box"></i> ${itemsCount} قطعة</span>` : ''}
+        ${deliveryBadge}
       </div>
-      <div style="display:flex;flex-wrap:wrap;gap:6px;padding-top:10px;border-top:1px dashed #e5e7eb">
-        <span style="background:#fef2f2;color:var(--primary-dark);padding:5px 10px;border-radius:8px;font-size:0.78rem;font-weight:900">${formatUSD(usd)}</span>
-        <span style="background:#fef2f2;color:var(--primary-dark);padding:5px 10px;border-radius:8px;font-size:0.78rem;font-weight:900">${formatTRY(try_)}</span>
-        <span style="background:#fef2f2;color:var(--primary-dark);padding:5px 10px;border-radius:8px;font-size:0.78rem;font-weight:900">${formatSYP(syr)}</span>
-      </div>
+      <div style="display:flex;flex-wrap:wrap;gap:6px;padding-top:10px;border-top:1px dashed #e5e7eb">${totalsHTML}</div>
     </div>`;
   }).join('');
 };
@@ -1509,37 +1452,56 @@ window.openOrderDetail = function(id){
   const o = DATA.orders.find(x => String(x.id) === String(id));
   if (!o) return;
   const usd = o.total_usd||0;
-  const try_ = o.total_try || usd * DEFAULT_RATES.TRY;
-  const syr = o.total_syr || usd * DEFAULT_RATES.SYP;
+  const try_ = o.total_try;
+  const syr = o.total_syr;
   const st = STATUS_LABELS[o.status] || STATUS_LABELS.pending;
   const items = Array.isArray(o.items) ? o.items : [];
   const itemsCount = items.reduce((s,i)=>s+(i.qty||1),0);
+  const deliveryLabel = o.delivery_method === 'shipping' ? 'شحن' : 'من المكتبة';
+  const deliveryIcon = o.delivery_method === 'shipping' ? 'fa-truck' : 'fa-store';
+  const deliveryClass = o.delivery_method === 'shipping' ? 'shipping' : 'pickup';
+  
   document.getElementById('odNumber').textContent = o.order_number;
   document.getElementById('odTitle').textContent = 'تفاصيل الطلب';
   document.getElementById('odStatus').textContent = o.status_label || st.label;
   document.getElementById('odDate').textContent = o.created_at_formatted || '';
+  
   const itemsHTML = items.length ? items.map(it => {
     const ipUSD = Number(it.price)||0;
-    const ipTRY = it.price_try!=null ? Number(it.price_try) : ipUSD * DEFAULT_RATES.TRY;
-    const ipSYP = it.price_syr!=null ? Number(it.price_syr) : ipUSD * DEFAULT_RATES.SYP;
+    const ipTRY = it.price_try != null ? Number(it.price_try) : null;
+    const ipSYP = it.price_syr != null ? Number(it.price_syr) : null;
     const qty = it.qty || 1;
-    return `<div style="display:flex;gap:12px;padding:12px 0;border-bottom:1px dashed #f1f5f9"><img src="${it.img||IMG_PLACEHOLDER}" style="width:64px;height:64px;border-radius:10px;object-fit:cover;border:1.5px solid #f1f5f9"><div style="flex:1;min-width:0"><h5 style="margin:0 0 4px;font-size:0.88rem;font-weight:900;color:var(--dark)">${it.name}</h5><div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:4px"><span style="background:#f8fafc;padding:3px 8px;border-radius:6px;font-size:0.72rem;font-weight:800;color:var(--primary-dark)">${formatUSD(ipUSD)}</span><span style="background:#f8fafc;padding:3px 8px;border-radius:6px;font-size:0.72rem;font-weight:800;color:var(--primary-dark)">${formatTRY(ipTRY)}</span><span style="background:#f8fafc;padding:3px 8px;border-radius:6px;font-size:0.72rem;font-weight:800;color:var(--primary-dark)">${formatSYP(ipSYP)}</span></div></div><div style="background:var(--dark);color:white;padding:4px 10px;border-radius:8px;font-size:0.78rem;font-weight:900;align-self:flex-start">×${qty}</div></div>`;
+    return `<div style="display:flex;gap:12px;padding:12px 0;border-bottom:1px dashed #f1f5f9"><img src="${it.img||IMG_PLACEHOLDER}" style="width:64px;height:64px;border-radius:10px;object-fit:cover;border:1.5px solid #f1f5f9"><div style="flex:1;min-width:0"><h5 style="margin:0 0 4px;font-size:0.88rem;font-weight:900;color:var(--dark)">${it.name}</h5><div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:4px"><span style="background:#f8fafc;padding:3px 8px;border-radius:6px;font-size:0.72rem;font-weight:800;color:var(--primary-dark)">${formatUSD(ipUSD)}</span>${ipTRY != null ? `<span style="background:#f8fafc;padding:3px 8px;border-radius:6px;font-size:0.72rem;font-weight:800;color:var(--primary-dark)">${formatTRY(ipTRY)}</span>` : ''}${ipSYP != null ? `<span style="background:#f8fafc;padding:3px 8px;border-radius:6px;font-size:0.72rem;font-weight:800;color:var(--primary-dark)">${formatSYP(ipSYP)}</span>` : ''}</div></div><div style="background:var(--dark);color:white;padding:4px 10px;border-radius:8px;font-size:0.78rem;font-weight:900;align-self:flex-start">×${qty}</div></div>`;
   }).join('') : '<p style="text-align:center;color:var(--gray);font-weight:700;padding:16px">لا توجد منتجات</p>';
+  
   document.getElementById('odBody').innerHTML = `
     <div style="padding:18px 24px;border-bottom:1px solid #f1f5f9"><h4 style="margin:0 0 10px;font-size:0.85rem;font-weight:900;color:var(--primary-dark);display:flex;align-items:center;gap:8px"><i class="fas fa-user" style="width:26px;height:26px;border-radius:8px;background:linear-gradient(135deg,var(--primary),var(--primary-dark));color:white;display:flex;align-items:center;justify-content:center;font-size:0.75rem"></i> بيانات العميل</h4>
       <div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px dashed #f1f5f9;font-size:0.88rem;font-weight:700"><span style="color:var(--gray);font-weight:800">الاسم</span><span style="color:var(--dark);font-weight:900">${o.customer_name||'—'}</span></div>
       <div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px dashed #f1f5f9;font-size:0.88rem;font-weight:700"><span style="color:var(--gray);font-weight:800">الهاتف</span><span style="color:var(--dark);font-weight:900;direction:ltr">${o.customer_phone||'—'}</span></div>
       <div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px dashed #f1f5f9;font-size:0.88rem;font-weight:700"><span style="color:var(--gray);font-weight:800">البريد</span><span style="color:var(--dark);font-weight:900">${o.customer_email||'—'}</span></div>
-      <div style="display:flex;justify-content:space-between;padding:8px 0;font-size:0.88rem;font-weight:700"><span style="color:var(--gray);font-weight:800">العنوان</span><span style="color:var(--dark);font-weight:900">${o.customer_address||'—'}</span></div>
+      ${o.customer_address ? `<div style="display:flex;justify-content:space-between;padding:8px 0;font-size:0.88rem;font-weight:700"><span style="color:var(--gray);font-weight:800">العنوان</span><span style="color:var(--dark);font-weight:900">${o.customer_address}</span></div>` : ''}
     </div>
+    
+    <div style="padding:18px 24px;border-bottom:1px solid #f1f5f9"><h4 style="margin:0 0 10px;font-size:0.85rem;font-weight:900;color:var(--primary-dark);display:flex;align-items:center;gap:8px"><i class="fas fa-truck-fast" style="width:26px;height:26px;border-radius:8px;background:linear-gradient(135deg,var(--primary),var(--primary-dark));color:white;display:flex;align-items:center;justify-content:center;font-size:0.75rem"></i> طريقة الاستلام</h4>
+      <div style="text-align:center;padding:10px 0"><span class="delivery-badge ${deliveryClass}" style="font-size:0.9rem;padding:8px 16px"><i class="fas ${deliveryIcon}"></i> ${deliveryLabel}</span></div>
+      ${o.delivery_method === 'shipping' && o.delivery_location ? `<div style="margin-top:10px;padding:10px;background:#ecfdf5;border:1.5px solid #10b981;border-radius:8px;font-size:0.82rem;font-weight:800;color:#059669"><i class="fas fa-map-marker-alt"></i> الموقع: <a href="${o.delivery_location}" target="_blank" style="text-decoration:underline;color:#059669;word-break:break-all">${o.delivery_location}</a></div>` : ''}
+      ${o.delivery_method === 'shipping' && !o.delivery_location ? `<div style="margin-top:10px;padding:10px;background:#fef3c7;border:1.5px solid #f59e0b;border-radius:8px;font-size:0.82rem;font-weight:800;color:#92400e"><i class="fas fa-exclamation-triangle"></i> لم يُرفق موقع</div>` : ''}
+    </div>
+    
+    ${o.notes ? `<div style="padding:18px 24px;border-bottom:1px solid #f1f5f9;background:#fffbeb"><h4 style="margin:0 0 10px;font-size:0.85rem;font-weight:900;color:#92400e;display:flex;align-items:center;gap:8px"><i class="fas fa-sticky-note"></i> ملاحظات العميل</h4><p style="font-size:0.88rem;font-weight:800;color:#78350f;line-height:1.7;background:white;padding:10px;border-radius:8px;border:1.5px solid #fde68a">${o.notes}</p></div>` : ''}
+    
     <div style="padding:18px 24px;border-bottom:1px solid #f1f5f9"><h4 style="margin:0 0 10px;font-size:0.85rem;font-weight:900;color:var(--primary-dark);display:flex;align-items:center;gap:8px"><i class="fas fa-shopping-bag" style="width:26px;height:26px;border-radius:8px;background:linear-gradient(135deg,var(--primary),var(--primary-dark));color:white;display:flex;align-items:center;justify-content:center;font-size:0.75rem"></i> المنتجات (${itemsCount})</h4>${itemsHTML}</div>
+    
     <div style="padding:18px 24px;border-bottom:1px solid #f1f5f9"><h4 style="margin:0 0 10px;font-size:0.85rem;font-weight:900;color:var(--primary-dark);display:flex;align-items:center;gap:8px"><i class="fas fa-coins" style="width:26px;height:26px;border-radius:8px;background:linear-gradient(135deg,var(--primary),var(--primary-dark));color:white;display:flex;align-items:center;justify-content:center;font-size:0.75rem"></i> الإجمالي</h4>
       <div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px dashed #f1f5f9;font-size:0.88rem;font-weight:700"><span style="color:var(--gray);font-weight:800">دولار</span><span style="color:#059669;font-weight:900">${formatUSD(usd)}</span></div>
-      <div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px dashed #f1f5f9;font-size:0.88rem;font-weight:700"><span style="color:var(--gray);font-weight:800">ليرة تركية</span><span style="color:#dc2626;font-weight:900">${formatTRY(try_)}</span></div>
-      <div style="display:flex;justify-content:space-between;padding:8px 0;font-size:0.88rem;font-weight:700"><span style="color:var(--gray);font-weight:800">ليرة سورية</span><span style="color:#b91c1c;font-weight:900">${formatSYP(syr)}</span></div>
+      ${try_ != null ? `<div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px dashed #f1f5f9;font-size:0.88rem;font-weight:700"><span style="color:var(--gray);font-weight:800">ليرة تركية</span><span style="color:#dc2626;font-weight:900">${formatTRY(try_)}</span></div>` : ''}
+      ${syr != null ? `<div style="display:flex;justify-content:space-between;padding:8px 0;font-size:0.88rem;font-weight:700"><span style="color:var(--gray);font-weight:800">ليرة سورية</span><span style="color:#b91c1c;font-weight:900">${formatSYP(syr)}</span></div>` : ''}
     </div>
+    
     ${o.discount_applied ? `<div style="padding:18px 24px;border-bottom:1px solid #f1f5f9;background:#ecfdf5"><h4 style="margin:0 0 6px;font-size:0.85rem;font-weight:900;color:#059669;display:flex;align-items:center;gap:8px"><i class="fas fa-gift"></i> خصم مُطبق</h4><p style="font-size:0.82rem;font-weight:800;color:#059669">${o.discount_applied.percent}% على ${o.discount_applied.scope === 'all' ? 'كل المنتجات' : 'منتجات محددة'}</p></div>` : ''}
+    
     ${o.receipt_image ? `<div style="padding:18px 24px;border-bottom:1px solid #f1f5f9"><h4 style="margin:0 0 10px;font-size:0.85rem;font-weight:900;color:var(--primary-dark);display:flex;align-items:center;gap:8px"><i class="fas fa-receipt" style="width:26px;height:26px;border-radius:8px;background:linear-gradient(135deg,var(--primary),var(--primary-dark));color:white;display:flex;align-items:center;justify-content:center;font-size:0.75rem"></i> الإشعار</h4><img src="${o.receipt_image}" style="max-width:100%;max-height:300px;border-radius:12px;cursor:zoom-in;border:2px solid #f1f5f9;margin:0 auto;display:block" onclick="openImage('${o.receipt_image}')"></div>` : ''}
+    
     <div style="padding:18px 24px;background:#f8fafc"><h4 style="margin:0 0 10px;font-size:0.85rem;font-weight:900;color:var(--primary-dark);display:flex;align-items:center;gap:8px"><i class="fas fa-cogs" style="width:26px;height:26px;border-radius:8px;background:linear-gradient(135deg,var(--primary),var(--primary-dark));color:white;display:flex;align-items:center;justify-content:center;font-size:0.75rem"></i> إجراءات</h4>
       <div style="display:flex;flex-direction:column;gap:8px">
         <button class="btn btn-primary" style="justify-content:center" onclick="closeOrderDetail();openOrderStatus('${o.id}')"><i class="fas fa-edit"></i> تغيير حالة الطلب</button>
@@ -1562,40 +1524,17 @@ window.renderCustomersTable = function(){
   if (!table) return;
   const search = (document.getElementById('customersSearch')?.value || '').toLowerCase().trim();
   let list = DATA.customers;
-  if (search) list = list.filter(c => 
-    (c.name||'').toLowerCase().includes(search) || 
-    (c.email||'').toLowerCase().includes(search) || 
-    (c.phone||'').toLowerCase().includes(search) || 
-    (c.city||'').toLowerCase().includes(search)
-  );
-  if (!list.length) { 
-    table.innerHTML = `<tr><td colspan="6" class="empty-state" style="padding:60px"><i class="fas fa-user-friends"></i><h3>${search ? 'لا توجد نتائج' : 'لا يوجد عملاء'}</h3></td></tr>`; 
-    return; 
-  }
+  if (search) list = list.filter(c => (c.name||'').toLowerCase().includes(search) || (c.email||'').toLowerCase().includes(search) || (c.phone||'').toLowerCase().includes(search) || (c.city||'').toLowerCase().includes(search));
+  if (!list.length) { table.innerHTML = `<tr><td colspan="6" class="empty-state" style="padding:60px"><i class="fas fa-user-friends"></i><h3>${search ? 'لا توجد نتائج' : 'لا يوجد عملاء'}</h3></td></tr>`; return; }
   table.innerHTML = list.map(c => {
     let discountBadge = '<span style="color:#94a3b8;font-size:0.8rem">—</span>';
     if (c.discount && c.discount.active) {
       const end = c.discount.end_date ? new Date(c.discount.end_date) : null;
       const expired = end && new Date() > end;
-      if (!expired) {
-        discountBadge = `<span class="customer-discount-badge"><i class="fas fa-gift"></i> ${c.discount.percent}%</span>`;
-      } else {
-        discountBadge = '<span style="color:#ef4444;font-size:0.75rem;font-weight:800">منتهي</span>';
-      }
+      if (!expired) discountBadge = `<span class="customer-discount-badge"><i class="fas fa-gift"></i> ${c.discount.percent}%</span>`;
+      else discountBadge = '<span style="color:#ef4444;font-size:0.75rem;font-weight:800">منتهي</span>';
     }
-    return `<tr>
-      <td style="font-weight:800">${c.name || '—'}</td>
-      <td>${c.email || '—'}</td>
-      <td style="direction:ltr">${c.phone || '—'}</td>
-      <td>${c.city || '—'}</td>
-      <td>${discountBadge}</td>
-      <td>
-        <div class="table-actions">
-          ${c.discount && c.discount.active ? `<button class="btn-icon" style="background:#fee2e2;color:#dc2626" onclick="removeCustomerDiscount('${c.id}')" title="إلغاء الخصم"><i class="fas fa-times"></i></button>` : ''}
-          <button class="btn-icon danger" onclick="deleteCustomer('${c.id}')"><i class="fas fa-trash"></i></button>
-        </div>
-      </td>
-    </tr>`;
+    return `<tr><td style="font-weight:800">${c.name || '—'}</td><td>${c.email || '—'}</td><td style="direction:ltr">${c.phone || '—'}</td><td>${c.city || '—'}</td><td>${discountBadge}</td><td><div class="table-actions">${c.discount && c.discount.active ? `<button class="btn-icon" style="background:#fee2e2;color:#dc2626" onclick="removeCustomerDiscount('${c.id}')" title="إلغاء الخصم"><i class="fas fa-times"></i></button>` : ''}<button class="btn-icon danger" onclick="deleteCustomer('${c.id}')"><i class="fas fa-trash"></i></button></div></td></tr>`;
   }).join('');
 };
 
@@ -1706,8 +1645,7 @@ window.manualRefresh = async function(){
 
 if (!document.getElementById('orderStatusModal')) {
   const div = document.createElement('div');
-  div.className = 'modal';
-  div.id = 'orderStatusModal';
+  div.className = 'modal'; div.id = 'orderStatusModal';
   div.onclick = e => { if (e.target === div) closeOrderStatusModal(); };
   div.innerHTML = `<div class="modal-content" style="max-width:480px"><div class="modal-header"><div class="modal-title"><i class="fas fa-edit"></i><span>تغيير حالة الطلب</span></div><button class="modal-close" onclick="closeOrderStatusModal()"><i class="fas fa-times"></i></button></div><div class="modal-body"><input type="hidden" id="orderStatusId"><label class="form-label">اختر الحالة الجديدة</label><select class="form-control" id="orderNewStatus"><option value="pending">مراجعة الدفع</option><option value="processing">قيد التجهيز</option><option value="shipping">في الطريق</option><option value="delivered">تم التسليم</option><option value="cancelled">ملغى</option></select><div class="form-actions"><button class="btn btn-outline" onclick="closeOrderStatusModal()">إلغاء</button><button class="btn btn-primary" onclick="saveOrderStatus()">حفظ</button></div></div></div>`;
   document.body.appendChild(div);
