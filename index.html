@@ -266,10 +266,20 @@ textarea.form-control{min-height:90px;resize:vertical}
 
 .customer-discount-badge{background:linear-gradient(135deg,#ecfdf5,#d1fae5);color:#059669;padding:3px 10px;border-radius:9999px;font-size:0.72rem;font-weight:900;display:inline-flex;align-items:center;gap:3px}
 
-/* Order detail - delivery info */
-.delivery-badge{display:inline-flex;align-items:center;gap:5px;padding:5px 12px;border-radius:9999px;font-size:0.78rem;font-weight:900}
-.delivery-badge.pickup{background:#dbeafe;color:#1e40af}
-.delivery-badge.shipping{background:#fef3c7;color:#92400e}
+/* ⭐ FEATURED SETTINGS SECTION */
+.featured-settings-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:16px}
+@media(max-width:640px){.featured-settings-grid{grid-template-columns:1fr}}
+.featured-set-card{background:linear-gradient(135deg,#f0fdf4,#dcfce7);border:2px solid #10b981;border-radius:14px;padding:16px}
+.featured-set-card.best{background:linear-gradient(135deg,#fef9c3,#fef3c7);border-color:#f59e0b}
+.featured-set-card h5{font-size:0.9rem;font-weight:900;margin-bottom:10px;display:flex;align-items:center;gap:6px;color:#065f46}
+.featured-set-card.best h5{color:#92400e}
+.featured-set-preview{margin-top:10px;padding:10px;background:white;border-radius:10px;display:flex;align-items:center;gap:10px;border:1.5px solid #e5e7eb;min-height:60px}
+.featured-set-preview img{width:44px;height:44px;border-radius:8px;object-fit:cover;border:1.5px solid #f1f5f9}
+.featured-set-preview .preview-info{flex:1;min-width:0}
+.featured-set-preview .preview-info h6{font-size:0.85rem;font-weight:900;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;margin-bottom:2px}
+.featured-set-preview .preview-info small{font-size:0.72rem;color:var(--primary-dark);font-weight:800}
+.featured-set-preview .preview-empty{font-size:0.82rem;color:#94a3b8;font-weight:800;font-style:italic}
+.featured-set-preview img[src*="svg"]{background:#fef2f2}
 
 @media(max-width:768px){
   .sidebar{transform:translateX(100%)}
@@ -451,6 +461,7 @@ textarea.form-control{min-height:90px;resize:vertical}
         <div class="discount-requests-grid" id="discountRequestsGrid"></div>
       </div>
 
+      <!-- ⭐ SETTINGS WITH FEATURED PRODUCTS ⭐ -->
       <div class="page" id="page-settings">
         <div class="card">
           <div class="card-header"><div class="card-title"><i class="fas fa-cog"></i><span>إعدادات المتجر</span></div></div>
@@ -488,6 +499,38 @@ textarea.form-control{min-height:90px;resize:vertical}
                 </div>
               </div>
             </div>
+            
+            <!-- ⭐ FEATURED PRODUCTS SECTION ⭐ -->
+            <div style="margin-top:24px;padding-top:20px;border-top:2px solid #10b981">
+              <h3 style="font-family:'Almarai',sans-serif;font-size:1.05rem;font-weight:900;margin-bottom:6px;display:flex;align-items:center;gap:8px">
+                <i class="fas fa-star" style="color:#f59e0b"></i> المنتجات المميزة أعلى المتجر
+              </h3>
+              <p style="font-size:0.82rem;color:var(--gray);font-weight:700;margin-bottom:14px;line-height:1.6">
+                <i class="fas fa-info-circle" style="color:#10b981"></i>
+                بطاقة "أعلى خصم" تُحسب تلقائياً. هنا تختار يدوياً المنتجين الآخرين اللذين يظهران بجوارها.
+              </p>
+              <div class="featured-settings-grid">
+                <div class="featured-set-card">
+                  <h5><i class="fas fa-star"></i> منتج جديد (البطاقة الوسطى)</h5>
+                  <select id="setNewProductId" class="form-control" onchange="updateFeaturedPreview('new')">
+                    <option value="">— لا يوجد (اتركها فارغة) —</option>
+                  </select>
+                  <div class="featured-set-preview" id="newPreview">
+                    <span class="preview-empty">لم يتم اختيار منتج</span>
+                  </div>
+                </div>
+                <div class="featured-set-card best">
+                  <h5><i class="fas fa-crown"></i> الأكثر مبيعاً (البطاقة الثالثة)</h5>
+                  <select id="setBestSellerId" class="form-control" onchange="updateFeaturedPreview('best')">
+                    <option value="">— لا يوجد (اتركها فارغة) —</option>
+                  </select>
+                  <div class="featured-set-preview" id="bestPreview">
+                    <span class="preview-empty">لم يتم اختيار منتج</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
             <div class="form-actions"><button class="btn btn-primary" onclick="saveSettings()"><i class="fas fa-save"></i><span>حفظ الإعدادات</span></button></div>
           </div>
         </div>
@@ -502,7 +545,7 @@ textarea.form-control{min-height:90px;resize:vertical}
               <div><label class="form-label">📱 الواتساب</label><input type="text" class="form-control" id="setWhatsapp" style="direction:ltr"></div>
               <div><label class="form-label">✉️ البريد</label><input type="email" class="form-control" id="setEmail"></div>
               <div><label class="form-label">📘 فيسبوك</label><input type="url" class="form-control" id="setFacebook" style="direction:ltr"></div>
-              <div><label class="form-label">📸 انستغرام</label><input type="url" class="form-control" id="setInstagram" style="direction:ltr"></div>
+              <div><label class="form-label">📸 انستغرام</label><input type="url" class="form-control" id="setInstagram" style="direction:ltr" placeholder="https://instagram.com/zanobia_syr"></div>
               <div><label class="form-label">💳 معرف شام كاش</label><input type="text" class="form-control" id="setShamId" style="direction:ltr"></div>
             </div>
             <div class="form-actions"><button class="btn btn-primary" onclick="saveContact()"><i class="fas fa-save"></i><span>حفظ</span></button></div>
@@ -540,7 +583,7 @@ textarea.form-control{min-height:90px;resize:vertical}
       <div style="margin-bottom:16px"><label class="form-label">القسم</label><select class="form-control" id="productCategory"><option value="">-- اختر --</option></select></div>
       <label class="form-label" style="margin-bottom:10px"><i class="fas fa-coins" style="color:var(--gold)"></i> الأسعار بالعملات</label>
       <div style="background:#dbeafe;border:1.5px solid #3b82f6;border-radius:10px;padding:10px;margin-bottom:14px;font-size:0.8rem;font-weight:800;color:#1e40af">
-        <i class="fas fa-info-circle"></i> الدولار <strong>إجباري</strong> — ليرة تركية وليرة سورية <strong>اختيارية</strong>. إذا تُرك حقل فارغاً، لن يُعرض سعر تلك العملة للعميل.
+        <i class="fas fa-info-circle"></i> الدولار <strong>إجباري</strong> — ليرة تركية وليرة سورية <strong>اختيارية</strong>.
       </div>
       <div class="currency-grid">
         <div class="currency-block"><h5><i class="fas fa-dollar-sign"></i> دولار أمريكي *</h5><span class="lbl-sm">السعر الحالي (مطلوب)</span><input type="number" id="productPrice" step="0.01" placeholder="0.00"><span class="lbl-sm">السعر قبل الخصم</span><input type="number" id="productOldPrice" step="0.01" placeholder="0.00"></div>
@@ -676,7 +719,7 @@ textarea.form-control{min-height:90px;resize:vertical}
       <div style="text-align:center;padding:10px 0 20px">
         <div style="width:80px;height:80px;margin:0 auto 14px;border-radius:50%;background:linear-gradient(135deg,#fee2e2,#fecaca);display:flex;align-items:center;justify-content:center;color:#dc2626;font-size:2.2rem;box-shadow:0 10px 30px rgba(220,38,38,0.2)"><i class="fas fa-trash-alt"></i></div>
         <h3 style="font-size:1.1rem;font-weight:900;margin-bottom:8px;color:var(--dark)" id="deleteAllTitle">حذف كل السجلات؟</h3>
-        <p style="font-size:0.88rem;color:var(--gray);font-weight:700;line-height:1.7" id="deleteAllMsg">سيتم حذف جميع السجلات نهائياً من Firebase. لا يمكن التراجع عن هذه العملية.</p>
+        <p style="font-size:0.88rem;color:var(--gray);font-weight:700;line-height:1.7" id="deleteAllMsg">سيتم حذف جميع السجلات نهائياً من Firebase.</p>
         <div style="background:#fef3c7;border:1.5px solid #f59e0b;border-radius:10px;padding:10px;margin-top:12px;font-size:0.82rem;font-weight:800;color:#92400e"><i class="fas fa-info-circle"></i> عدد السجلات: <span id="deleteAllCount">0</span></div>
       </div>
       <div class="form-actions" style="flex-direction:column;gap:8px;border-top:1.5px solid #f1f5f9;padding-top:16px;margin-top:0">
@@ -714,7 +757,6 @@ const db = getFirestore(app);
 
 const ADMIN_EMAIL = 'admin@zenobia.com';
 const ADMIN_PASSWORD = 'z789z98zfd';
-// ⚠️ DEFAULT_RATES أُزيلت — لا يوجد تصريف تلقائي
 
 let DATA = {products:[], categories:[], orders:[], customers:[], discountRequests:[], settings: {}, contact: {}};
 let productImageData = null, galleryImages = [], currentBadge = '';
@@ -778,7 +820,7 @@ async function initAdmin(){
   await loadAllFromFirebase();
   renderDashboard(); renderProductsTable(); renderCategoriesTable();
   renderOrdersCards(); renderCustomersTable(); renderDiscountRequests();
-  fillCategorySelects(); applyLogos();
+  fillCategorySelects(); fillFeaturedSelects(); applyLogos();
 }
 
 window.autoSeedFirebase = async function(){
@@ -798,7 +840,7 @@ window.autoSeedFirebase = async function(){
     showToast('🎉 تم الرفع بنجاح');
     await loadAllFromFirebase();
     document.getElementById('initBanner').style.display = 'none';
-    renderDashboard(); renderProductsTable(); renderCategoriesTable(); renderOrdersCards(); renderCustomersTable();
+    renderDashboard(); renderProductsTable(); renderCategoriesTable(); renderOrdersCards(); renderCustomersTable(); fillFeaturedSelects();
   } catch(err){ showToast('⚠️ فشل: ' + err.message, 'error'); }
 };
 
@@ -867,7 +909,10 @@ function resizeImageToDataURL(file, maxSize, callback){
       if (w > h) { if (w > maxSize){ h = h*maxSize/w; w = maxSize; } }
       else { if (h > maxSize){ w = w*maxSize/h; h = maxSize; } }
       canvas.width = w; canvas.height = h;
-      canvas.getContext('2d').drawImage(img, 0, 0, w, h);
+      const ctx = canvas.getContext('2d');
+      ctx.imageSmoothingEnabled = true;
+      ctx.imageSmoothingQuality = 'high';
+      ctx.drawImage(img, 0, 0, w, h);
       callback(canvas.toDataURL('image/png'));
     };
     img.src = ev.target.result;
@@ -877,13 +922,13 @@ function resizeImageToDataURL(file, maxSize, callback){
 
 window.handleStoreLogo = function(e){
   const file = e.target.files[0]; if (!file) return;
-  resizeImageToDataURL(file, 400, dataUrl => { storeLogoData = dataUrl; DATA.settings.logo = dataUrl; applyLogos(); showToast('✓ تم رفع لوجو المتجر — اضغط حفظ'); });
+  resizeImageToDataURL(file, 800, dataUrl => { storeLogoData = dataUrl; DATA.settings.logo = dataUrl; applyLogos(); showToast('✓ تم رفع لوجو المتجر — اضغط حفظ'); });
   e.target.value = '';
 };
 window.removeStoreLogo = function(){ if (!confirm('حذف لوجو المتجر؟')) return; storeLogoData = null; DATA.settings.logo = ''; applyLogos(); showToast('تم الحذف', 'info'); };
 window.handleAdminLogo = function(e){
   const file = e.target.files[0]; if (!file) return;
-  resizeImageToDataURL(file, 400, dataUrl => { adminLogoData = dataUrl; DATA.settings.adminLogo = dataUrl; applyLogos(); showToast('✓ تم رفع لوجو اللوحة — اضغط حفظ'); });
+  resizeImageToDataURL(file, 800, dataUrl => { adminLogoData = dataUrl; DATA.settings.adminLogo = dataUrl; applyLogos(); showToast('✓ تم رفع لوجو اللوحة — اضغط حفظ'); });
   e.target.value = '';
 };
 window.removeAdminLogo = function(){ if (!confirm('حذف لوجو لوحة التحكم؟')) return; adminLogoData = null; DATA.settings.adminLogo = ''; applyLogos(); showToast('تم الحذف', 'info'); };
@@ -927,6 +972,52 @@ function fillCategorySelects(){
   if (sel) sel.innerHTML = '<option value="">-- اختر --</option>' + DATA.categories.map(c => `<option value="${c.id}">${c.name}</option>`).join('');
 }
 
+// ⭐ FEATURED PRODUCTS SELECTS
+function fillFeaturedSelects(){
+  const newSel = document.getElementById('setNewProductId');
+  const bestSel = document.getElementById('setBestSellerId');
+  if (!newSel || !bestSel) return;
+  
+  const currentNew = DATA.settings.newProductId || '';
+  const currentBest = DATA.settings.bestSellerId || '';
+  
+  const options = '<option value="">— لا يوجد —</option>' + DATA.products.map(p => `<option value="${p.id}">${p.name}</option>`).join('');
+  newSel.innerHTML = options;
+  bestSel.innerHTML = options;
+  
+  newSel.value = currentNew;
+  bestSel.value = currentBest;
+  
+  updateFeaturedPreview('new');
+  updateFeaturedPreview('best');
+}
+
+window.updateFeaturedPreview = function(type){
+  const selId = type === 'new' ? 'setNewProductId' : 'setBestSellerId';
+  const previewId = type === 'new' ? 'newPreview' : 'bestPreview';
+  const sel = document.getElementById(selId);
+  const preview = document.getElementById(previewId);
+  if (!sel || !preview) return;
+  
+  const productId = sel.value;
+  if (!productId) {
+    preview.innerHTML = '<span class="preview-empty">لم يتم اختيار منتج</span>';
+    return;
+  }
+  const p = DATA.products.find(x => String(x.id) === String(productId));
+  if (!p) {
+    preview.innerHTML = '<span class="preview-empty">المنتج غير موجود</span>';
+    return;
+  }
+  preview.innerHTML = `
+    <img src="${p.img||IMG_PLACEHOLDER}" onerror="this.src='${IMG_PLACEHOLDER}'">
+    <div class="preview-info">
+      <h6>${p.name}</h6>
+      <small>${formatUSD(p.price)}</small>
+    </div>
+  `;
+};
+
 // ============ DELETE ALL ============
 window.deleteAllOrders = function(){
   deleteAllType = 'orders'; deleteAllItems = [...DATA.orders];
@@ -934,11 +1025,11 @@ window.deleteAllOrders = function(){
 };
 window.deleteAllCustomers = function(){
   deleteAllType = 'customers'; deleteAllItems = [...DATA.customers];
-  openDeleteAllModal('حذف كل العملاء؟', 'سيتم حذف جميع حسابات العملاء نهائياً. سيخسر العملاء خصوماتهم أيضاً.');
+  openDeleteAllModal('حذف كل العملاء؟', 'سيتم حذف جميع حسابات العملاء نهائياً.');
 };
 window.deleteAllDiscountRequests = function(){
   deleteAllType = 'discount_requests'; deleteAllItems = [...DATA.discountRequests];
-  openDeleteAllModal('حذف كل طلبات الخصم؟', 'سيتم حذف جميع طلبات خصم الانستغرام نهائياً من Firebase. لن تتأثر الخصومات المفعّلة على حسابات العملاء.');
+  openDeleteAllModal('حذف كل طلبات الخصم؟', 'سيتم حذف جميع طلبات خصم الانستغرام نهائياً.');
 };
 
 function openDeleteAllModal(title, msg){
@@ -1135,7 +1226,7 @@ window.renderProductsTable = function(){
 
 window.deleteProduct = async function(id){
   if (!confirm('حذف المنتج؟')) return;
-  try { await deleteDoc(doc(db, 'products', String(id))); await loadAllFromFirebase(); renderProductsTable(); updateSidebarCounts(); showToast('✅ تم الحذف'); } catch(e){ showToast('❌ فشل', 'error'); }
+  try { await deleteDoc(doc(db, 'products', String(id))); await loadAllFromFirebase(); renderProductsTable(); updateSidebarCounts(); fillFeaturedSelects(); showToast('✅ تم الحذف'); } catch(e){ showToast('❌ فشل', 'error'); }
 };
 
 window.toggleBundlePrice = function(){
@@ -1236,11 +1327,14 @@ window.handleProductImage = function(e){
     const img = new Image();
     img.onload = () => {
       const canvas = document.createElement('canvas');
-      const max = 600; let w = img.width, h = img.height;
+      const max = 900; let w = img.width, h = img.height;
       if (w>h){ if (w>max){ h=h*max/w; w=max; } } else { if (h>max){ w=w*max/h; h=max; } }
       canvas.width=w; canvas.height=h;
-      canvas.getContext('2d').drawImage(img,0,0,w,h);
-      productImageData = canvas.toDataURL('image/jpeg',0.8);
+      const ctx = canvas.getContext('2d');
+      ctx.imageSmoothingEnabled = true;
+      ctx.imageSmoothingQuality = 'high';
+      ctx.drawImage(img,0,0,w,h);
+      productImageData = canvas.toDataURL('image/jpeg', 0.88);
       const up = document.getElementById('productImgUpload');
       up.classList.add('has-image');
       up.innerHTML = `<img src="${productImageData}" class="img-upload-preview"><button class="img-upload-btn" onclick="event.stopPropagation();document.getElementById('productImgInput').click()"><i class="fas fa-sync"></i> تغيير</button><input type="file" id="productImgInput" accept="image/*" onchange="handleProductImage(event)">`;
@@ -1259,11 +1353,14 @@ window.handleGalleryImage = function(e){
       const img = new Image();
       img.onload = () => {
         const canvas = document.createElement('canvas');
-        const max = 600; let w = img.width, h = img.height;
+        const max = 800; let w = img.width, h = img.height;
         if (w>h){ if (w>max){ h=h*max/w; w=max; } } else { if (h>max){ w=w*max/h; h=max; } }
         canvas.width=w; canvas.height=h;
-        canvas.getContext('2d').drawImage(img,0,0,w,h);
-        galleryImages.push(canvas.toDataURL('image/jpeg',0.8));
+        const ctx = canvas.getContext('2d');
+        ctx.imageSmoothingEnabled = true;
+        ctx.imageSmoothingQuality = 'high';
+        ctx.drawImage(img,0,0,w,h);
+        galleryImages.push(canvas.toDataURL('image/jpeg', 0.85));
         renderGalleryPreview();
       };
       img.src = ev.target.result;
@@ -1298,7 +1395,7 @@ window.saveProduct = async function(){
     if (id) await updateDoc(doc(db, 'products', String(id)), data);
     else { data.createdAt = new Date().toISOString(); data.rating = 5; data.reviews = 0; await addDoc(collection(db, 'products'), data); }
     showToast('✅ تم حفظ المنتج بنجاح');
-    closeProductModal(); await loadAllFromFirebase(); renderProductsTable(); updateSidebarCounts();
+    closeProductModal(); await loadAllFromFirebase(); renderProductsTable(); updateSidebarCounts(); fillFeaturedSelects();
   } catch(err){ showToast('❌ فشل: ' + err.message, 'error'); }
 };
 
@@ -1356,7 +1453,7 @@ function renderIconPreview(){
 
 window.handleIconFile = function(e){
   const file = e.target.files[0]; if (!file) return;
-  resizeImageToDataURL(file, 200, dataUrl => { categoryIconValue = dataUrl; categoryIconType = 'image'; renderIconPreview(); showToast('✓ تم رفع الأيقونة'); });
+  resizeImageToDataURL(file, 300, dataUrl => { categoryIconValue = dataUrl; categoryIconType = 'image'; renderIconPreview(); showToast('✓ تم رفع الأيقونة'); });
   e.target.value = '';
 };
 
@@ -1427,8 +1524,8 @@ window.renderOrdersCards = function(){
     const itemsCount = Array.isArray(o.items) ? o.items.reduce((s,i)=>s+(i.qty||1),0) : 0;
     const st = STATUS_LABELS[o.status] || STATUS_LABELS.pending;
     const deliveryBadge = o.delivery_method === 'shipping' 
-      ? '<span class="delivery-badge shipping"><i class="fas fa-truck"></i> شحن</span>' 
-      : '<span class="delivery-badge pickup"><i class="fas fa-store"></i> من المكتبة</span>';
+      ? '<span style="display:inline-flex;align-items:center;gap:5px;padding:5px 12px;border-radius:9999px;font-size:0.78rem;font-weight:900;background:#fef3c7;color:#92400e"><i class="fas fa-truck"></i> شحن</span>' 
+      : '<span style="display:inline-flex;align-items:center;gap:5px;padding:5px 12px;border-radius:9999px;font-size:0.78rem;font-weight:900;background:#dbeafe;color:#1e40af"><i class="fas fa-store"></i> من المكتبة</span>';
     let totalsHTML = `<span style="background:#fef2f2;color:var(--primary-dark);padding:5px 10px;border-radius:8px;font-size:0.78rem;font-weight:900">${formatUSD(usd)}</span>`;
     if (try_ != null) totalsHTML += `<span style="background:#fef2f2;color:var(--primary-dark);padding:5px 10px;border-radius:8px;font-size:0.78rem;font-weight:900">${formatTRY(try_)}</span>`;
     if (syr != null) totalsHTML += `<span style="background:#fef2f2;color:var(--primary-dark);padding:5px 10px;border-radius:8px;font-size:0.78rem;font-weight:900">${formatSYP(syr)}</span>`;
@@ -1459,7 +1556,8 @@ window.openOrderDetail = function(id){
   const itemsCount = items.reduce((s,i)=>s+(i.qty||1),0);
   const deliveryLabel = o.delivery_method === 'shipping' ? 'شحن' : 'من المكتبة';
   const deliveryIcon = o.delivery_method === 'shipping' ? 'fa-truck' : 'fa-store';
-  const deliveryClass = o.delivery_method === 'shipping' ? 'shipping' : 'pickup';
+  const deliveryBg = o.delivery_method === 'shipping' ? '#fef3c7' : '#dbeafe';
+  const deliveryColor = o.delivery_method === 'shipping' ? '#92400e' : '#1e40af';
   
   document.getElementById('odNumber').textContent = o.order_number;
   document.getElementById('odTitle').textContent = 'تفاصيل الطلب';
@@ -1483,7 +1581,7 @@ window.openOrderDetail = function(id){
     </div>
     
     <div style="padding:18px 24px;border-bottom:1px solid #f1f5f9"><h4 style="margin:0 0 10px;font-size:0.85rem;font-weight:900;color:var(--primary-dark);display:flex;align-items:center;gap:8px"><i class="fas fa-truck-fast" style="width:26px;height:26px;border-radius:8px;background:linear-gradient(135deg,var(--primary),var(--primary-dark));color:white;display:flex;align-items:center;justify-content:center;font-size:0.75rem"></i> طريقة الاستلام</h4>
-      <div style="text-align:center;padding:10px 0"><span class="delivery-badge ${deliveryClass}" style="font-size:0.9rem;padding:8px 16px"><i class="fas ${deliveryIcon}"></i> ${deliveryLabel}</span></div>
+      <div style="text-align:center;padding:10px 0"><span style="display:inline-flex;align-items:center;gap:6px;padding:8px 16px;border-radius:9999px;font-size:0.9rem;font-weight:900;background:${deliveryBg};color:${deliveryColor}"><i class="fas ${deliveryIcon}"></i> ${deliveryLabel}</span></div>
       ${o.delivery_method === 'shipping' && o.delivery_location ? `<div style="margin-top:10px;padding:10px;background:#ecfdf5;border:1.5px solid #10b981;border-radius:8px;font-size:0.82rem;font-weight:800;color:#059669"><i class="fas fa-map-marker-alt"></i> الموقع: <a href="${o.delivery_location}" target="_blank" style="text-decoration:underline;color:#059669;word-break:break-all">${o.delivery_location}</a></div>` : ''}
       ${o.delivery_method === 'shipping' && !o.delivery_location ? `<div style="margin-top:10px;padding:10px;background:#fef3c7;border:1.5px solid #f59e0b;border-radius:8px;font-size:0.82rem;font-weight:800;color:#92400e"><i class="fas fa-exclamation-triangle"></i> لم يُرفق موقع</div>` : ''}
     </div>
@@ -1555,11 +1653,22 @@ function fillSettingsForm(){
   document.getElementById('setStoreNameEn').value = DATA.settings.storeNameEn||'';
   document.getElementById('setTopBar').value = DATA.settings.topBar||'';
   document.getElementById('setMarqueeSpeed').value = DATA.settings.marqueeSpeed || 15;
+  fillFeaturedSelects();
   applyLogos();
 }
 
 window.saveSettings = async function(){
-  const newSettings = { ...DATA.settings, storeName: document.getElementById('setStoreName').value.trim(), storeNameEn: document.getElementById('setStoreNameEn').value.trim(), topBar: document.getElementById('setTopBar').value.trim(), marqueeSpeed: parseFloat(document.getElementById('setMarqueeSpeed').value) || 15, logo: storeLogoData || '', adminLogo: adminLogoData || '' };
+  const newSettings = { 
+    ...DATA.settings, 
+    storeName: document.getElementById('setStoreName').value.trim(), 
+    storeNameEn: document.getElementById('setStoreNameEn').value.trim(), 
+    topBar: document.getElementById('setTopBar').value.trim(), 
+    marqueeSpeed: parseFloat(document.getElementById('setMarqueeSpeed').value) || 15, 
+    logo: storeLogoData || '', 
+    adminLogo: adminLogoData || '',
+    newProductId: document.getElementById('setNewProductId')?.value || '',
+    bestSellerId: document.getElementById('setBestSellerId')?.value || ''
+  };
   try { await setDoc(doc(db, 'settings', 'main'), {settings: newSettings, contact: DATA.contact}, {merge:true}); DATA.settings = newSettings; applyLogos(); showToast('✅ تم حفظ الإعدادات'); } catch(e){ showToast('❌ فشل', 'error'); }
 };
 
@@ -1568,7 +1677,7 @@ function fillContactForm(){
   document.getElementById('setWhatsapp').value = DATA.contact.whatsapp||'';
   document.getElementById('setEmail').value = DATA.contact.email||'';
   document.getElementById('setFacebook').value = DATA.contact.facebook||'';
-  document.getElementById('setInstagram').value = DATA.contact.instagram||'';
+  document.getElementById('setInstagram').value = DATA.contact.instagram||'https://instagram.com/zanobia_syr';
   document.getElementById('setShamId').value = DATA.contact.shamId||'';
 }
 
